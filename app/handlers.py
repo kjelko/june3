@@ -193,11 +193,12 @@ class ManageFoodChoiceHandler(JsonHandler):
 
   def HandleDelete(self):
     food_choice_key = GetFoodChoice(self.request.get('food_choice_id')).key
-    q = models.Guest.query().filter(models.Guest.food_choice == )
+    q = models.Guest.query().filter(models.Guest.food_choice == food_choice_key)
     for guest in q.iter():
       guest.food_choice = None
       guest.put()
     food_choice_key.delete()
+
 
 def GetFoodChoice(food_choice_id):
   food_choice = models.FoodChoice.get_by_id(AsInt(food_choice_id))
