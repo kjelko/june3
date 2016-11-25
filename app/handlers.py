@@ -55,6 +55,12 @@ class JsonHandler(webapp2.RequestHandler):
       self.response.out.write(json.dumps(resp))
 
 
+def GetInvitation(code):
+  invitation = models.Invitation.Get(code)
+  if not invitation:
+    raise InvitationNotFoundError
+
+
 class InvitationHandler(JsonHandler):
   """Retrieves invitation details."""
 
@@ -62,13 +68,27 @@ class InvitationHandler(JsonHandler):
     code = self.request.get('code')
     if not code:
       raise NoInvitationSpecifiedError
-    invitation = models.Invitation.Get(self.request.get('code'))
-    if not invitation:
-      raise InvitationNotFoundError
-    return invitation.to_dict()
+    return GetInvitation(code).to_dict()
     
   def HandlePost(self):
     return {}
 
+
+class ManageInvitationHandler(JsonHandler):
+  """Allows admins to manage invitations."""
+
+  def HandleGet(self):
+    code = self.request.get('code')
+    if code:
+      return GetInvitation(code).to_dict()
+    else:
+      return [i.to_dict() for i in models.Invitation.query().iter()]
+
+  def HandlePost(self):
+    code = self.request.get('code')
+    if code:
+      invitation = GetInvitation(code)
+    else:
+      invitation = models.Invitation.Create()
 
 

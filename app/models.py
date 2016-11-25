@@ -24,6 +24,7 @@ class Invitation(ndb.Model):
   code = ndb.StringProperty()
   guests = ndb.KeyProperty(kind=Guest, repeated=True)
   rsvp = ndb.StringProperty(default=RsvpStatus.NO_RESPONSE)
+  guests_attending = ndb.IntegerProperty(default=0)
 
   @classmethod
   def Get(cls, code, keys_only=False):
