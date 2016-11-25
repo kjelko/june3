@@ -16,12 +16,20 @@ class NoInvitationSpecifiedError(Error):
   default_msg = 'No invitation code was specified.'
   code = httplib.BAD_REQUEST
 
+
 class InvitationNotFoundError(Error):
   default_msg = 'Could not find invitation with specified code.'
   code = httplib.NOT_FOUND
 
+
+class FoodChoiceNotFoundError(Error):
+  default_msg = 'Could not find food choice with specified code.'
+  code = httplib.NOT_FOUND
+
+
 class InvalidRequestError():
   default_msg = ''
+
 
 class JsonHandler(webapp2.RequestHandler):
   """Base JSON handler."""
@@ -55,19 +63,6 @@ class JsonHandler(webapp2.RequestHandler):
     self.response.headers['Content-type'] = 'application/json'
     if resp:
       self.response.out.write(json.dumps(resp))
-
-
-def GetInvitation(code):
-  invitation = models.Invitation.Get(code)
-  if not invitation:
-    raise InvitationNotFoundError
-
-
-def AsInt(value):
-  try:
-    return int(value)
-  except ValueError:
-    raise InvalidRequestError
 
 
 class InvitationHandler(JsonHandler):
@@ -130,6 +125,13 @@ class ManageInvitationHandler(JsonHandler):
   """Allows admins to manage invitations."""
 
   def HandleGet(self):
+    """Returns info about a single or list of invitations.
+    
+    GET Args:
+      code: Id of the invitation to list. If not specified all are returned.
+    Returns:
+      The requested invitation info.
+    """
     code = self.request.get('code')
     if code:
       return GetInvitation(code).to_dict()
@@ -137,19 +139,80 @@ class ManageInvitationHandler(JsonHandler):
       return [i.to_dict() for i in models.Invitation.query().iter()]
 
   def HandlePost(self):
-    code = self.request.get('code')
-    if code:
-      invitation = GetInvitation(code)
-    else:
-      invitation = models.Invitation.Create()
+    """Updated invations/guests.
 
-    if self.request.get('guests'):
-      # Update guests.
-    if self.request.get('rsvp'):
-      # Update RSVP.
-    if self.request.get('guests_attending'):
-      # Update guests attending
+    POST Args:
+      code: The code of the invitation to updated. If not specified a new one
+          will be created.
+      guests: List of guest information to attach to the invitation.
+    Returns:
+      Updated invitation.
+    """
+    code = self.request.get('code')
+    invitation = GetInvitation(code) if code else models.Invitation.Create()
+    invitation.guests = []
+
+    guests = json.parse(self.request.get('guests'))
+    for g in guest:
+      guest_id = g.get('id')
+      guest = model.Guest.get_by_id(guest_id) if guest_id else model.Guest()
+      if g.get('rsvp') == models.RsvpStatus.COMING:
+        guest.rsvp = models.RsvpStatus.COMING
+        guest.food_choice = ndb.Key(model.FoodChoice, int(g.get('food_choice')))
+      elif g.get('rsvp') == models.RsvpStatus.NOT_COMING:
+        guest.rsvp = models.RsvpStatus.NOT_COMING
+        guest.food_choice = None
+      else:
+        guest.rsvp == models.RsvpStatus.NO_RESPONSE
+        guest.food_choice = None
+      invitation.guests.append(guest.put())
 
     invitation.put()
     return invitation.to_dict()  
 
+  def HandleDelete(self):
+    GetInvitation(self.request.get('code')).key.delete()
+
+
+class ManageFoodChoiceHandler(JsonHandler):
+
+  def HandleGet(self):
+    food_choice_id = self.request.get('food_choice_id')
+    if food_choice_id:
+      return GetFoodChoice(food_choice_id).to_dict()
+    else:
+      return [f.to_dict() for f in models.FoodChoice.query().iter()]
+
+  def HandlePost(self):
+    food_choice_id = self.request.get('food_choice_id')
+    food_choice = (GetInvitation(food_choice_id) if food_choice_id else
+                   models.FoodChoice())
+    food_choice.name = self.request.get('name')
+    food_choice.name = self.request.get('description')
+    food_choice.put()
+
+  def HandleDelete(self):
+    food_choice_key = GetFoodChoice(self.request.get('food_choice_id')).key
+    q = models.Guest.query().filter(models.Guest.food_choice == )
+    for guest in q.iter():
+      guest.food_choice = None
+      guest.put()
+    food_choice_key.delete()
+
+def GetFoodChoice(food_choice_id):
+  food_choice = models.FoodChoice.get_by_id(AsInt(food_choice_id))
+  if not food_choice:
+    raise InvitationNotFoundError
+
+
+def GetInvitation(code):
+  invitation = models.Invitation.Get(code)
+  if not invitation:
+    raise InvitationNotFoundError
+
+
+def AsInt(value):
+  try:
+    return int(value)
+  except ValueError:
+    raise InvalidRequestError

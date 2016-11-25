@@ -16,7 +16,7 @@ class FoodChoice(ndb.Model):
 
 
 class Guest(ndb.Model):
-  name = ndb.StringProperty()
+  name = ndb.StringProperty(default='Guest')
   food_choice = ndb.KeyProperty(kind=FoodChoice)
   rsvp = ndb.StringProperty(default=RsvpStatus.NO_RESPONSE)
 
