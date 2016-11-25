@@ -18,13 +18,12 @@ class FoodChoice(ndb.Model):
 class Guest(ndb.Model):
   name = ndb.StringProperty()
   food_choice = ndb.KeyProperty(kind=FoodChoice)
+  rsvp = ndb.StringProperty(default=RsvpStatus.NO_RESPONSE)
 
 
 class Invitation(ndb.Model):
   code = ndb.StringProperty()
   guests = ndb.KeyProperty(kind=Guest, repeated=True)
-  rsvp = ndb.StringProperty(default=RsvpStatus.NO_RESPONSE)
-  guests_attending = ndb.IntegerProperty(default=0)
 
   @classmethod
   def Get(cls, code, keys_only=False):

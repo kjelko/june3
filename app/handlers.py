@@ -20,6 +20,8 @@ class InvitationNotFoundError(Error):
   default_msg = 'Could not find invitation with specified code.'
   code = httplib.NOT_FOUND
 
+class InvalidRequestError():
+  default_msg = ''
 
 class JsonHandler(webapp2.RequestHandler):
   """Base JSON handler."""
@@ -61,17 +63,67 @@ def GetInvitation(code):
     raise InvitationNotFoundError
 
 
+def AsInt(value):
+  try:
+    return int(value)
+  except ValueError:
+    raise InvalidRequestError
+
+
 class InvitationHandler(JsonHandler):
   """Retrieves invitation details."""
 
   def HandleGet(self):
+    """Retreives ingormations about a single invitation.
+
+    GET Args:
+      code: The unique invitation code.
+    Returns:
+      invitation information
+    """
     code = self.request.get('code')
     if not code:
       raise NoInvitationSpecifiedError
     return GetInvitation(code).to_dict()
-    
+ 
+
+def GuestHandler(JsonHandler):
+
   def HandlePost(self):
-    return {}
+    """Updates RSVP status and food choice.
+
+    POST Args:
+      code: Invitation code.
+      rsvp: RSVP status.
+      guests_attending: Number of guests attending.
+    Returns:
+      updated invitation info.
+    """
+    code = self.request.get('code')
+    if not code:
+      raise NoInvitationSpecifiedError
+    invitation = GetInvitation(code)
+    
+    invitation_guest_ids = [g.key.id() for g in invitation.guests]
+
+    if self.request.get('guest'):
+      raise GuestNotSpecifiedError
+
+    guest = model.Guest.get_by_id(int(self.request.get('guest')))
+
+    rsvp = self.request.get('rsvp')
+    
+    if rsvp == models.RsvpStatus.COMING
+      guest.rsvp = models.RsvpStatus.COMING
+      quest.food_choice = ndb.Key(model.FoodChoice, 
+                                  int(self.request.get('food_choice')))
+    
+    elif rsvp == models.RsvpStatus.NOT_COMING:
+      invitation.rsvp = models.RsvpStatus.NOT_COMING
+      guest.food_choice = None
+    
+    guest.put()
+    return guest.to_dict()
 
 
 class ManageInvitationHandler(JsonHandler):
@@ -91,6 +143,13 @@ class ManageInvitationHandler(JsonHandler):
     else:
       invitation = models.Invitation.Create()
 
-    # Update invitations here.
-    
+    if self.request.get('guests'):
+      # Update guests.
+    if self.request.get('rsvp'):
+      # Update RSVP.
+    if self.request.get('guests_attending'):
+      # Update guests attending
+
+    invitation.put()
+    return invitation.to_dict()  
 
