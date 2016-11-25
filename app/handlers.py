@@ -91,4 +91,6 @@ class ManageInvitationHandler(JsonHandler):
     else:
       invitation = models.Invitation.Create()
 
+    # Update invitations here.
+    
 
