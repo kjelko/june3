@@ -1,5 +1,6 @@
 import httplib
 import json
+import logging
 import models
 import webapp2
 
@@ -38,6 +39,7 @@ class JsonHandler(webapp2.RequestHandler):
     super(JsonHandler, self).__init__(*args, **kwargs)
     self.get = self.GetHandler('get')
     self.post = self.GetHandler('post')
+    self.delete = self.GetHandler('delete')
 
   def GetHandler(self, method):
     def __handler__(*args, **kwargs):
@@ -108,7 +110,7 @@ def GuestHandler(JsonHandler):
 
     rsvp = self.request.get('rsvp')
     
-    if rsvp == models.RsvpStatus.COMING
+    if rsvp == models.RsvpStatus.COMING:
       guest.rsvp = models.RsvpStatus.COMING
       quest.food_choice = ndb.Key(model.FoodChoice, 
                                   int(self.request.get('food_choice')))
@@ -203,13 +205,15 @@ class ManageFoodChoiceHandler(JsonHandler):
 def GetFoodChoice(food_choice_id):
   food_choice = models.FoodChoice.get_by_id(AsInt(food_choice_id))
   if not food_choice:
-    raise InvitationNotFoundError
+    raise FoodChoiceNotFoundError
+  return food_choice
 
 
 def GetInvitation(code):
   invitation = models.Invitation.Get(code)
   if not invitation:
     raise InvitationNotFoundError
+  return invitation
 
 
 def AsInt(value):
