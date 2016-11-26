@@ -7,10 +7,12 @@ import webapp2
 JINJA_ENVIRONMENT = jinja2.Environment(
       autoescape=True,
       extensions=['jinja2.ext.autoescape'],
-      loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+      loader=jinja2.FileSystemLoader(os.path.join(os.path.dirname(__file__), 
+                                                  'static/templates')))
 
 
 class WeddingSite(webapp2.RequestHandler):
+  
   def get(self):
     template = JINJA_ENVIRONMENT.get_template('index.html')
     template_args = {}
@@ -18,6 +20,7 @@ class WeddingSite(webapp2.RequestHandler):
 
 
 class WeddingAdminSite(webapp2.RequestHandler):
+  
   def get(self):
     template = JINJA_ENVIRONMENT.get_template('admin.html')
     template_args = {}
@@ -25,8 +28,10 @@ class WeddingAdminSite(webapp2.RequestHandler):
 
 
 app = webapp2.WSGIApplication([
+    # Main site handlers.
     webapp2.Route('/', WeddingSite),
     webapp2.Route('/api/invitation', handlers.InvitationHandler),
+    # Admin handlers.
     webapp2.Route('/admin', WeddingAdminSite),
     webapp2.Route('/admin/api/invitation', handlers.ManageInvitationHandler),
     webapp2.Route('/admin/api/food_choice', handlers.ManageFoodChoiceHandler),
