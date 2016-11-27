@@ -1,6 +1,11 @@
 module.exports = function(grunt) {
+  
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    clean: {
+      startFresh: ['static/js/script.min.js'],
+      cleanUp: ['<%= concat.dist.dest %>']
+    },
     concat: {
       options: {
         separator: ';'
@@ -19,10 +24,18 @@ module.exports = function(grunt) {
           'static/js/script.min.js': ['<%= concat.dist.dest %>']
         }
 		  }
-	  }
+	  },
   });
+
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-sass');
-  grunt.registerTask('default', ['concat', 'uglify', 'sass']);
+  
+  grunt.registerTask('default', [
+    'clean:startFresh', 
+    'concat', 
+    'uglify', 
+    'clean:cleanUp'
+  ]);
 };
