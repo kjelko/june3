@@ -9,11 +9,13 @@ libraries:
   version: "2.5.1"
 
 handlers:
-- url: /static/css
-  static_dir: static/css
+- url: /static/css/style.min.css
+  static_files: static/css/style.min.css
+  upload: static/css/style.min.css
 
-- url: /static/js
-  static_dir: static/js
+- url: /static/js/script.min.js
+  static_files: static/js/script.min.js
+  upload: static/js/script.min.js
 
 - url: /_ah/admin(/.*)?
   script: google.appengine.ext.admin.application
