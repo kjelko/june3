@@ -17,6 +17,9 @@ handlers:
   static_files: static/js/script.min.js
   upload: static/js/script.min.js
 
+- url: /static/assets
+  static_dir: static/assets/
+
 - url: /_ah/admin(/.*)?
   script: google.appengine.ext.admin.application
   login: admin

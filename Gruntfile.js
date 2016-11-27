@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     clean: {
-      startFresh: ['app/static/js/script.min.js', '<%= sass.dist.dest %>'],
+      startFresh: ['app/static/js/script.min.js', 'app/static/css/style.min.css'],
       cleanUp: ['<%= concat.dist.dest %>']
     },
     concat: {
@@ -33,19 +33,27 @@ module.exports = function(grunt) {
         src: 'app/static/css/main.scss',
         dest: 'app/static/css/style.min.css',
       }
-    }
+    },
+    watch: {
+      scripts: {
+        files: ['app/static/css/*.scss'],
+        tasks: ['sass'],
+      },
+},
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-sass');
-  
+  grunt.loadNpmTasks('grunt-contrib-watch');
+
   grunt.registerTask('default', [
     'clean:startFresh', 
     'concat', 
     'uglify', 
     'sass',
-    'clean:cleanUp'
+    'clean:cleanUp',
+    'watch',
   ]);
 };

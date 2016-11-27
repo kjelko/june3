@@ -1,4 +1,5 @@
 #!/bin/sh
 
-grunt ;
-dev_appserver.py app ;
+grunt &
+dev_appserver.py app &
+wait &
