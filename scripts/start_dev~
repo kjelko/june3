@@ -1,0 +1,4 @@
+#!/bin/sh
+
+grunt app ;
+dev_appserver.py app ;

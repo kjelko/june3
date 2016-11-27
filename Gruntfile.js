@@ -3,7 +3,7 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     clean: {
-      startFresh: ['static/js/script.min.js'],
+      startFresh: ['app/static/js/script.min.js'],
       cleanUp: ['<%= concat.dist.dest %>']
     },
     concat: {
@@ -11,8 +11,8 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['static/js/*.js', 'static/js/**/*.js'],
-        dest: 'static/js/script.js'
+        src: ['app/static/js/*.js', 'app/static/js/**/*.js'],
+        dest: 'app/static/js/script.js'
       }
     },
     uglify: {
@@ -21,7 +21,7 @@ module.exports = function(grunt) {
       },
       build: {
         files: {
-          'static/js/script.min.js': ['<%= concat.dist.dest %>']
+          'app/static/js/script.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
