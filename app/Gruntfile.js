@@ -16,15 +16,15 @@ module.exports = function(grunt) {
       }
     },
     uglify: {
-		  options: {
+      options: {
         banner: '/* <%= grunt.template.today("yyyy-mm-dd") %> */\n'
-		  },
-		  build: {
-		    files: {
+      },
+      build: {
+        files: {
           'static/js/script.min.js': ['<%= concat.dist.dest %>']
         }
-		  }
-	  },
+      }
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
