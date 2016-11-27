@@ -30,7 +30,7 @@ module.exports = function(grunt) {
         style: 'compressed'
       },
       dist: {
-        src: 'app/static/css/app.scss',
+        src: 'app/static/css/main.scss',
         dest: 'app/static/css/style.min.css',
       }
     }
