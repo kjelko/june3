@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-  <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400i|Oswald" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville:400i|Oswald|Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.css">
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.5.5/angular-animate.min.js"></script>
@@ -11,7 +11,5 @@
   <link href="/static/css/style.min.css" rel="stylesheet">
   <script src="/static/js/script.min.js"></script>
   <title>{% block title %}{% endblock %}</title>
-  <body ng-app="Temp" ng-cloak>{% block body %}{% endblock %}
-  <script type="text/javascript">angular.module('Temp', ['ngMaterial', 'duScroll']);</script>
-  </body>
+  <body ng-app="June3App" ng-cloak id="top">{% block body %}{% endblock %}</body>
 </html>

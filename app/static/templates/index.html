@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
-{% block title %}Hello{% endblock %}
-{% block body %}
+{% block title %}Kevin &amp; Theresa | June 3rd, 2017{% endblock %}
 
+{% block body %}
   <nav>
     <a href="#story" du-smooth-scroll>Our story</a>
     <a href="#logistics" du-smooth-scroll>Logistics</a>
     <a href="#registry" du-smooth-scroll>Registry</a>
     <a href="#rsvp" du-smooth-scroll>RSVP</a>
+    <a href="#top" du-smooth-scroll><i class="material-icons">arrow_upward</i></a>
   </nav>
 
   <section class="hero" layout="row" layout-align="center center">
@@ -93,8 +94,9 @@
     <h3><span>RSVP</span></h3>
   </section>
 
-  <section class="footer">
-    
+  <section class="footer" layout="column" layout-align="center center">
+    <div>
+      Thank you!
+    </div>
   </section>
-
 {% endblock %}

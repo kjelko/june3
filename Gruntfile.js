@@ -35,11 +35,11 @@ module.exports = function(grunt) {
       }
     },
     watch: {
-      scripts: {
+      styles: {
         files: ['app/static/css/*.scss'],
         tasks: ['sass'],
       },
-},
+    },
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
