@@ -1,16 +1,26 @@
+html, 
 body {
-  background: whitesmoke;
+  height: 100%;
+}
+
+body {
   color: #444;  
   margin: 0;
-  padding: 0;
 }
 
 h1, h2, h3, h4, h5, nav a {
   font-family: 'Oswald', sans-serif;
 }
 
-a {
+a,
+a:visited {
   text-decoration: none;
+  transition: background ease-out .6s;
+  color: #adc67b;
+}
+
+img {
+  max-width: 100%;
 }
 
 nav {
@@ -21,11 +31,10 @@ nav {
   z-index: 1;
 
   a {
-    color: #222;
+    color: #222 !important;
     display: inline-block;
     padding: 10px 20px;
     margin: 5px 10px;
-    transition: background ease-out .6s;
     text-transform: uppercase;
   }
 
@@ -35,16 +44,45 @@ nav {
 }
 
 section {
+  background: #fff;
+  margin: 0 10px;
+  min-height: 300px;
+  padding-bottom: 25px;
+
   div {
     margin: auto;
     max-width: 1000px;
+  }
+
+  > h3 {
+    color: #fecb9c;
+  }
+
+  h3 {
+    border-bottom: 1px solid #ebebeb;
+    margin: 0 0 50px;
+    text-align: center;
+
+    span {
+      background: #fff;
+      display: inline-block;
+      padding: 0 15px;
+      position: relative;
+      top: 11px;
+    }
+  }
+
+  .intro {
+    text-align: center;
   }
 }
 
 section.hero {
   background: url('/static/assets/hero.jpg') no-repeat;
   background-size: cover;
+  margin: 0;
   min-height: 600px;
+  padding: 0;
 
   div {
     background: rgba(255, 255, 255, .4);
@@ -64,14 +102,14 @@ section.hero {
         z-index: 1;
       }
 
-      span.ampersand {
+      .ampersand {
         color: #adc67b;
         text-shadow: 1px 1px rgba(0,0,0,0.6);
         font-family: 'Libre Baskerville', serif;
         font-size: 130px;
         font-style: italic;
         font-weight: 100;
-        margin-right: -30px;
+        margin-right: -40px;
         position: relative;
         right: 30px;
         top: 35px;
@@ -86,11 +124,32 @@ section.hero {
     }
 
     a {
-      background: #fecb9c;
+      background: #df862d;
       color: #fff;
       display: block;
       padding: 10px 0;
       text-align: center;
     }
+
+    a:hover {
+      background: #fecb9c;
+    }
   }
+}
+
+#registry {
+  a {
+    img {
+      transition: opacity 0.6s ease-out;
+    }
+
+    img:hover {
+      opacity: .5;
+    }
+  }
+}
+
+section.footer {
+  background: #adc67b;
+  margin: 0;
 }
