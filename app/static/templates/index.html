@@ -101,6 +101,33 @@
 
   <section id="rsvp">
     <h3><span>RSVP</span></h3>
+    <div layout="row" layout-align="center center" ng-show="!$ctrl.invitation">
+      <label>Invitation code</label>
+      <input type="text" ng-model="$ctrl.invitationCode">
+      <md-button ng-click="$ctrl.lookUpInvitation()">Go</md-button>
+    </div>
+    <div ng-show="$ctrl.invitation">
+      <div ng-repeat="guest in $ctrl.invitation.guests" layout="column" layout-align="space-between">
+        <div ng-bind="guest.name"></div>
+        <div>
+          RSVP:
+          <md-radio-group ng-model="guest.rsvp">
+            <md-radio-button value="coming">Coming!</md-radio-button>
+            <md-radio-button value="not_coming">Sorry, can't make it.</md-radio-button>
+          </md-radio-group>
+        </div>
+        <div ng-if="guest.rsvp == 'coming'">
+          Food selection:
+          <md-radio-group ng-model="guest.food_choice">
+            <md-radio-button ng-repeat="food_choice in $ctrl.foodChoices" 
+                             ng-value="food_choice.id">
+              <span ng-bind="food_choice.name"></span>
+            </md-radio-button>
+          </md-radio-group>
+        </div>
+      </div>
+      <md-button ng-click="$ctrl.sendRsvp()">Submit</md-button>
+    </div>
   </section>
 
   <section class="footer" layout="column" layout-align="center center">

@@ -1,13 +1,28 @@
-var PageController = function($window, $rootScope) {
+var PageController = function($window, $rootScope, $http) {
   this.window_ = $window;
 
   this.rootScope_ = $rootScope;
+
+  this.http_ = $http;
 
   this.showUpArrow = this.window_.scrollY > 100;
 
   this.loadingMap = false;
 
   this.showingVenue = true;
+
+  this.invitationCode = null;
+
+  this.invitation = null;
+
+  this.foodChoices = [
+    {'id': 1234, 'name': 'Fish', 'description': 'A fish'},
+    {'id': 2345, 'name': 'Steak', 'description': 'Steak'},
+    {'id': 3456, 'name': 'Chicken', 'description': 'Chicken'},
+    {'id': 4567, 'name': 'Vegetarian', 'description': 'Veggies'}
+  ];
+
+  console.log(this);
 };
 
 
@@ -47,6 +62,23 @@ PageController.prototype.setLoading_ = function(opt_delay) {
 };
 
 
+PageController.prototype.lookUpInvitation = function() {
+  if (!this.invitationCode || (this.invitation && this.invitationCode == this.invitation.code)) { return; }
+  var config = {params: {'code': this.invitationCode}};
+  this.http_.get('/api/invitation', config).then(function(resp) {
+    this.invitation = resp.data;
+  }.bind(this));
+};
+
+
+PageController.prototype.sendRsvp = function() {
+  if (!this.invitation) { return; }
+  this.http_.post('/api/invitation', this.invitation).then(function(resp) {
+    console.log(resp.data);
+  });
+};
+
+
 angular.module('June3App', ['ngMaterial', 'duScroll'])
-    .controller('PageController', ['$window', '$rootScope', PageController])
+    .controller('PageController', ['$window', '$rootScope', '$http', PageController])
     .value('duScrollOffset', 54);
