@@ -3,8 +3,8 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     clean: {
-      startFresh: ['app/static/js/script.min.js', 'app/static/css/style.min.css'],
-      cleanUp: ['<%= concat.dist.dest %>']
+      startFresh: ['app/static/js/script.min.js'],
+      cleanUp: ['app/static/js/script-concat.min.js']
     },
     concat: {
       options: {
@@ -12,7 +12,7 @@ module.exports = function(grunt) {
       },
       dist: {
         src: ['app/static/js/*.js', 'app/static/js/**/*.js'],
-        dest: 'app/static/js/script.js'
+        dest: 'app/static/js/script-concat.min.js'
       }
     },
     uglify: {
@@ -40,10 +40,18 @@ module.exports = function(grunt) {
         tasks: ['sass'],
       },
       scripts: {
-        files: ['app/static/js/*.js, app/static/js/**/*.js'],
-        tasks: ['clean:cleanUp', 'concact', 'uglify']
+        files: ['app/static/js/*.js', 'app/static/js/**/*.js', '!**/*.min.js'],
+        tasks: ['clean:startFresh', 'concat', 'uglify', 'clean:cleanUp'],
+        options: {
+          interrupt: false
+        }
       }
     },
+    concurrent: {
+      watch: {
+        tasks: ['watch:styles', 'watch:scripts']
+      }
+    }
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
@@ -51,13 +59,14 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-concurrent');
 
   grunt.registerTask('default', [
+    'sass',
     'clean:startFresh', 
     'concat', 
     'uglify', 
-    'sass',
     'clean:cleanUp',
-    'watch',
+    'concurrent'
   ]);
 };
