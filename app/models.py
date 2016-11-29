@@ -8,15 +8,24 @@ class JsonMixin(object):
 
   def to_dict(self):
     d = {}
+    if isinstance(self, ndb.Model):
+      d['id'] = self.key.id()
     for key, prop in self._properties.iteritems():
       value = getattr(self, key)
-      if isinstance(prop, ndb.KeyProperty) and value is not None:
-        d[key] = ([v.get().to_dict() for v in value] 
-                  if isinstance(value, list) 
-                  else value.get().to_dict())
+      if isinstance(prop, ndb.KeyProperty) and value:
+        if isinstance(value, list):
+          d[key] = []
+          for v in value:
+            model_instance = v.get()
+            if model_instance:
+              d[key].append(model_instance.to_dict()) 
+        else:
+          model_instance = value.get()
+          d[key] = model_instance.to_dict() if model_instance else None
       else:
         d[key] = value
     return d
+
 
 class RsvpStatus(object):
   NO_RESPONSE = 'no_response'
