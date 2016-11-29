@@ -31,6 +31,7 @@ app = webapp2.WSGIApplication([
     # Main site handlers.
     webapp2.Route('/', WeddingSite),
     webapp2.Route('/api/invitation', handlers.InvitationHandler),
+    webapp2.Route('/api/food_choice', handlers.ManageFoodChoiceHandler, methods=['GET']),
     # Admin handlers.
     webapp2.Route('/admin', WeddingAdminSite),
     webapp2.Route('/admin/api/invitation', handlers.ManageInvitationHandler),

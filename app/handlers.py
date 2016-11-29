@@ -120,7 +120,7 @@ class InvitationHandler(JsonHandler):
       
       if rsvp == models.RsvpStatus.COMING:
         guest_ndb.rsvp = models.RsvpStatus.COMING
-        guest_ndb.food_choice = models.FoodChoice(id=guest.get('food_choice')).key
+        guest_ndb.food_choice = models.FoodChoice(id=guest.get('food_choice').get('id')).key
       
       elif rsvp == models.RsvpStatus.NOT_COMING:
         guest_ndb.rsvp = models.RsvpStatus.NOT_COMING
