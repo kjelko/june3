@@ -8,7 +8,7 @@
     <a href="#logistics" du-smooth-scroll>Logistics</a>
     <a href="#registry" du-smooth-scroll>Registry</a>
     <a href="#rsvp" du-smooth-scroll>RSVP</a>
-    <a href="#top" du-smooth-scroll><i class="material-icons">arrow_upward</i></a>
+    <a href="#top" du-smooth-scroll ng-show="$ctrl.showUpArrow"><i class="material-icons">arrow_upward</i></a>
   </nav>
 
   <section class="hero" layout="row" layout-align="center center">
@@ -39,31 +39,40 @@
       <div flex="40">
         <div>
           <h3><span>Venue</span></h3>
-          <h4>
-            <a href="http://www.prophecycreekmanor.com/">
-              The Manor House at Prophecy Creek Park
-            </a>
-          </h4>
-          <p>
-            205 West Skippack Pike, (Route 73)<br>
-            Ambler, Pa. 19002
-          </p>
+          <div class="address" ng-click="$ctrl.showVenue()" ng-class="{active: $ctrl.showingVenue}">
+            <h4>
+              <a href="http://www.prophecycreekmanor.com/">
+                The Manor House at Prophecy Creek Park
+              </a>
+            </h4>
+            <p>
+              205 West Skippack Pike, (Route 73)<br>
+              Ambler, Pa. 19002
+            </p>
+          </div>
         </div>
         <div>
           <h3><span>Hotel</span></h3>
-          <h4>
-            <a href="http://www.marriott.com/hotels/travel/phlcy-courtyard-philadelphia-plymouth-meeting/">
-              Courtyard Philadelphia Plymouth Meeting
-            </a>
-          </h4>
-          <p>
-            651 Fountain Road<br>
-            Plymouth Meeting, Pa. 19462
-          </p>
+          <div class="address" ng-click="$ctrl.showHotel()" ng-class="{active: !$ctrl.showingVenue}">
+            <h4>
+              <a href="http://www.marriott.com/hotels/travel/phlcy-courtyard-philadelphia-plymouth-meeting/">
+                Courtyard Philadelphia Plymouth Meeting
+              </a>
+            </h4>
+            <p>
+              651 Fountain Road<br>
+              Plymouth Meeting, Pa. 19462
+            </p>
+          </div>
         </div>
       </div>
-      <div flex="50">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3049.8594642353787!2d-75.25229168495976!3d40.145414080020075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6bc9dddab5417%3A0x74451dfec1110243!2sThe+Manor+House+at+Prophecy+Creek+Park!5e0!3m2!1sen!2sus!4v1480293384557" width="500" height="350" frameborder="0" style="border:0" allowfullscreen></iframe>
+      <div flex="50" layout="column" layout-align="stretch">
+        <div ng-show="$ctrl.loadingMap"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>
+        <div ng-show="!$ctrl.loadingMap" style="margin-top:25px;">
+          <iframe ng-show="$ctrl.showingVenue" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3049.8594642353787!2d-75.25229168495976!3d40.145414080020075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6bc9dddab5417%3A0x74451dfec1110243!2sThe+Manor+House+at+Prophecy+Creek+Park!5e0!3m2!1sen!2sus!4v1480293384557" frameborder="0" style="border:0; height:415px; width:500px;" allowfullscreen></iframe>
+          <iframe ng-show="!$ctrl.showingVenue" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3050.909095384814!2d-75.28568578496048!3d40.12202928143425!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc2e42701c72c5141!2sCourtyard+Philadelphia+Plymouth+Meeting!5e0!3m2!1sen!2sus!4v1480378870381" frameborder="0" style="border:0; height:415px; width:500px;" allowfullscreen></iframe>
+        </div>
+
       </div>
     </div>
   </section>
