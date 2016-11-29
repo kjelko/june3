@@ -60,9 +60,14 @@ PageController.prototype.setLoading_ = function(opt_delay) {
 };
 
 
-PageController.prototype.lookUpInvitation = function() {
+PageController.prototype.lookUpInvitation = function(event) {
   if (!this.invitationCode || (this.invitation && this.invitationCode == this.invitation.code)) { return; }
-  var config = {params: {'code': this.invitationCode}};
+  var config = {
+    params: {
+      'code': this.invitationCode,
+      'g-recaptcha-response': event.target.elements['g-recaptcha-response'].value
+    }
+  };
   this.http_.get('/api/invitation', config).then(function(resp) {
     this.invitation = resp.data;
   }.bind(this));

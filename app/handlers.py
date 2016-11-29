@@ -2,7 +2,10 @@ import httplib
 import json
 import logging
 import models
+import urllib
 import webapp2
+
+from google.appengine.api import urlfetch
 
 
 class Error(Exception):
@@ -15,6 +18,11 @@ class Error(Exception):
 
 class NoInvitationSpecifiedError(Error):
   default_msg = 'No invitation code was specified.'
+  code = httplib.BAD_REQUEST
+
+
+class CaptchaError(Error):
+  default_msg = 'reCaptcha error'
   code = httplib.BAD_REQUEST
 
 
@@ -82,10 +90,31 @@ class InvitationHandler(JsonHandler):
     """Retreives ingormations about a single invitation.
 
     GET Args:
+      g-recaptcha-response: reCaptcha response.
       code: The unique invitation code.
     Returns:
       invitation information
     """
+    repsonse = {}
+    try:
+      g_captcha_response = self.request.get('g-recaptcha-response')
+      form_data = urllib.urlencode({
+          'secret': '6Lc1Rw0UAAAAAMun0dm6SQd0PdCuPIcYb4YwW0Rg',
+          'response': g_captcha_response,
+          'remoteip': self.request.remote_addr 
+      })
+      result = urlfetch.fetch(
+          url='https://www.google.com/recaptcha/api/siteverify',
+          payload=form_data,
+          method=urlfetch.POST,
+          headers={'Content-Type': 'application/x-www-form-urlencoded'})
+      response = json.loads(result.content)
+    except Exception:
+      raise CaptchaError
+
+    if response.get('success'):
+      raise CaptchaError
+
     code = self.request.get('code')
     if not code:
       raise NoInvitationSpecifiedError

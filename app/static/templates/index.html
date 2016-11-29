@@ -102,9 +102,12 @@
   <section id="rsvp">
     <h3><span>RSVP</span></h3>
     <div layout="row" layout-align="center center" ng-show="!$ctrl.invitation">
-      <label>Invitation code</label>
-      <input type="text" ng-model="$ctrl.invitationCode">
-      <md-button ng-click="$ctrl.lookUpInvitation()">Go</md-button>
+      <form ng-submit="$ctrl.lookUpInvitation($event)">
+        <label>Invitation code</label>
+        <input type="text" ng-model="$ctrl.invitationCode">
+        <div class="g-recaptcha" data-sitekey="6Lc1Rw0UAAAAAE0Ny9GzKrFE6bukJoAbO-a82CGf"></div>
+        <md-button type="submit">Go</md-button>
+      </form>
     </div>
     <div ng-show="$ctrl.invitation">
       <div ng-repeat="guest in $ctrl.invitation.guests" layout="column" layout-align="space-between">
