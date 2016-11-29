@@ -4,24 +4,38 @@ import string
 from google.appengine.ext import ndb
 
 
+class JsonMixin(object):
+
+  def to_dict(self):
+    d = {}
+    for key, prop in self._properties.iteritems():
+      value = getattr(self, key)
+      if isinstance(prop, ndb.KeyProperty) and value is not None:
+        d[key] = ([v.get().to_dict() for v in value] 
+                  if isinstance(value, list) 
+                  else value.get().to_dict())
+      else:
+        d[key] = value
+    return d
+
 class RsvpStatus(object):
   NO_RESPONSE = 'no_response'
   COMING = 'coming'
   NOT_COMING = 'not_coming'
 
 
-class FoodChoice(ndb.Model):
+class FoodChoice(JsonMixin, ndb.Model):
   name = ndb.StringProperty()
   description = ndb.StringProperty()
 
 
-class Guest(ndb.Model):
+class Guest(JsonMixin, ndb.Model):
   name = ndb.StringProperty(default='Guest')
   food_choice = ndb.KeyProperty(kind=FoodChoice)
   rsvp = ndb.StringProperty(default=RsvpStatus.NO_RESPONSE)
 
 
-class Invitation(ndb.Model):
+class Invitation(JsonMixin, ndb.Model):
   code = ndb.StringProperty()
   guests = ndb.KeyProperty(kind=Guest, repeated=True)
 
@@ -42,7 +56,7 @@ class Invitation(ndb.Model):
     return inviation
 
 
-class Wedding(ndb.Model):
+class Wedding(JsonMixin, ndb.Model):
   """Ancestor for invitation."""
 _WEDDING = Wedding.get_or_insert('wedding')
 
