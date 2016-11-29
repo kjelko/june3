@@ -18,6 +18,11 @@ class NoInvitationSpecifiedError(Error):
   code = httplib.BAD_REQUEST
 
 
+class GuestNotOnInvitationError(Error):
+  default_msg = 'Guest is not on invitation.'
+  code = httplib.BAD_REQUEST
+
+
 class InvitationNotFoundError(Error):
   default_msg = 'Could not find invitation with specified code.'
   code = httplib.NOT_FOUND
@@ -49,14 +54,17 @@ class JsonHandler(webapp2.RequestHandler):
   def DoHandler(self, method, *args, **kwargs): 
     resp = None   
     handler_method = getattr(self, 'Handle%s' % method.title())
-    
-    if handler_method: 
-      try:  
+
+    if handler_method:
+      if method == 'post':
+        self.request = json.loads(self.request.body)
+      try:
         resp = handler_method(*args, **kwargs)
       except Error as e:
         resp = {'error': str(e)}
         self.response.status = e.code
       except Exception as e:
+        logging.exception('Uncaught error.')
         self.response.status = httplib.INTERNAL_SERVER_ERROR
         resp = {'error': str(e)}
     else:
@@ -82,17 +90,13 @@ class InvitationHandler(JsonHandler):
     if not code:
       raise NoInvitationSpecifiedError
     return GetInvitation(code).to_dict()
- 
-
-def GuestHandler(JsonHandler):
 
   def HandlePost(self):
     """Updates RSVP status and food choice.
 
     POST Args:
       code: Invitation code.
-      rsvp: RSVP status.
-      guests_attending: Number of guests attending.
+      guests: Guest info.
     Returns:
       updated invitation info.
     """
@@ -101,26 +105,28 @@ def GuestHandler(JsonHandler):
       raise NoInvitationSpecifiedError
     invitation = GetInvitation(code)
     
-    invitation_guest_ids = [g.key.id() for g in invitation.guests]
+    invitation_guest_ids = [g.id() for g in invitation.guests]
 
-    if self.request.get('guest'):
+    if not self.request.get('guests'):
       raise GuestNotSpecifiedError
 
-    guest = model.Guest.get_by_id(int(self.request.get('guest')))
+    for guest in self.request.get('guests'):
 
-    rsvp = self.request.get('rsvp')
-    
-    if rsvp == models.RsvpStatus.COMING:
-      guest.rsvp = models.RsvpStatus.COMING
-      quest.food_choice = ndb.Key(model.FoodChoice, 
-                                  int(self.request.get('food_choice')))
-    
-    elif rsvp == models.RsvpStatus.NOT_COMING:
-      invitation.rsvp = models.RsvpStatus.NOT_COMING
-      guest.food_choice = None
-    
-    guest.put()
-    return guest.to_dict()
+      if guest.get('id') not in invitation_guest_ids:
+        raise GuestNotOnInvitationError
+
+      guest_ndb = models.Guest.get_by_id(guest.get('id'))
+      rsvp = guest.get('rsvp')
+      
+      if rsvp == models.RsvpStatus.COMING:
+        guest_ndb.rsvp = models.RsvpStatus.COMING
+        guest_ndb.food_choice = models.FoodChoice(id=guest.get('food_choice')).key
+      
+      elif rsvp == models.RsvpStatus.NOT_COMING:
+        guest_ndb.rsvp = models.RsvpStatus.NOT_COMING
+        guest_ndb.food_choice = None
+      
+      guest_ndb.put()
 
 
 class ManageInvitationHandler(JsonHandler):
