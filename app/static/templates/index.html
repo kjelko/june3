@@ -118,7 +118,7 @@
         </div>
         <div ng-if="guest.rsvp == 'coming'">
           Food selection:
-          <md-radio-group ng-model="guest.food_choice">
+          <md-radio-group ng-model="guest.food_choice.id">
             <md-radio-button ng-repeat="food_choice in $ctrl.foodChoices" 
                              ng-value="food_choice.id">
               <span ng-bind="food_choice.name"></span>

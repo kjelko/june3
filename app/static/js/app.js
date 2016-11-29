@@ -15,20 +15,18 @@ var PageController = function($window, $rootScope, $http) {
 
   this.invitation = null;
 
-  this.foodChoices = [
-    {'id': 1234, 'name': 'Fish', 'description': 'A fish'},
-    {'id': 2345, 'name': 'Steak', 'description': 'Steak'},
-    {'id': 3456, 'name': 'Chicken', 'description': 'Chicken'},
-    {'id': 4567, 'name': 'Vegetarian', 'description': 'Veggies'}
-  ];
-
-  console.log(this);
+  this.foodChoices = [];
 };
 
 
 PageController.prototype.$onInit = function() {
   this.window_.addEventListener('scroll', this.updateShowArrow_.bind(this));
+  
   this.setLoading_(3000);
+  
+  this.http_.get('/api/food_choice').then(function(resp) {
+    this.foodChoices = resp.data;
+  }.bind(this));
 };
 
 
