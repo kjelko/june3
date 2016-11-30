@@ -13,10 +13,14 @@ h1, h2, h3, h4, h5, nav a {
 }
 
 a,
-a:visited {
+a:visited, 
+a.md-button { 
+  color: #adc67b;
+}
+
+a {
   text-decoration: none;
   transition: background ease-out .6s;
-  color: #adc67b;
 }
 
 img {
@@ -148,7 +152,10 @@ section.hero {
 
 #logistics {
   iframe {
-
+    border: 0px;
+    height: 495px;
+    margin-top: 10px;
+    width: 500px;
   }
 
   .address {
@@ -160,6 +167,10 @@ section.hero {
   .address:hover,
   .address.active {
     background: whitesmoke;
+  }
+
+  .divider {
+    opacity: .3;
   }
 }
 
