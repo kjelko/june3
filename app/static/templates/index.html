@@ -8,7 +8,7 @@
     <a href="#logistics" du-smooth-scroll>Logistics</a>
     <a href="#registry" du-smooth-scroll>Registry</a>
     <a href="#rsvp" du-smooth-scroll>RSVP</a>
-    <a href="#top" du-smooth-scroll ng-show="$ctrl.showUpArrow"><i class="material-icons">arrow_upward</i></a>
+    <a href="#top" du-smooth-scroll ng-show="$ctrl.showUpArrow"><md-icon>arrow_upward</md-icon></a>
   </nav>
 
   <section class="hero" layout="row" layout-align="center center">
@@ -42,12 +42,13 @@
           <div class="address" ng-click="$ctrl.showVenue()" ng-class="{active: $ctrl.showingVenue}">
             <h4>
               <a href="http://www.prophecycreekmanor.com/">
-                The Manor House at Prophecy Creek Park
+                The Manor House at Prophecy Creek Park <md-icon>open_in_new</md-icon>
               </a>
             </h4>
             <p>
               205 West Skippack Pike, (Route 73)<br>
-              Ambler, Pa. 19002
+              Ambler, Pa. 19002<br>
+              <span class="md-caption"><a href="https://maps.google.com/maps?ll=40.14541,-75.250103&z=16&t=m&hl=en-US&gl=US&mapclient=embed&daddr=The%20Manor%20House%20at%20Prophecy%20Creek%20Park%20205%20W%20Skippack%20Pike%20Ambler%2C%20PA%2019002@40.14541,-75.250103">Directions</a></span>
             </p>
           </div>
         </div>
@@ -56,12 +57,15 @@
           <div class="address" ng-click="$ctrl.showHotel()" ng-class="{active: !$ctrl.showingVenue}">
             <h4>
               <a href="http://www.marriott.com/hotels/travel/phlcy-courtyard-philadelphia-plymouth-meeting/">
-                Courtyard Philadelphia Plymouth Meeting
+                Courtyard Philadelphia Plymouth Meeting <md-icon>open_in_new</md-icon>
               </a>
             </h4>
             <p>
               651 Fountain Road<br>
-              Plymouth Meeting, Pa. 19462
+              Plymouth Meeting, Pa. 19462<br>
+              <span class="md-caption">
+                <a href="https://maps.google.com/maps?ll=40.122177,-75.283163&z=16&t=m&hl=en-US&gl=US&mapclient=embed&daddr=Courtyard%20Philadelphia%20Plymouth%20Meeting%20651%20Fountain%20Rd%20Plymouth%20Meeting%2C%20PA%2019462@40.1221767,-75.283163">Directions</a> |
+                For reservations: <a href="tel:1-800-321-2211">1 (800) 321-2211</a></span>
             </p>
           </div>
         </div>
@@ -107,7 +111,7 @@
         <label>Invitation code</label>
         <input type="text" ng-model="$ctrl.invitationCode">
         <div class="g-recaptcha" data-sitekey="6Lc1Rw0UAAAAAE0Ny9GzKrFE6bukJoAbO-a82CGf"></div>
-        <md-button type="submit">Go</md-button>
+        <md-button type="submit">Find invitation</md-button>
       </form>
     </div>
     <div ng-show="$ctrl.invitation">
