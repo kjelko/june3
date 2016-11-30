@@ -8,6 +8,12 @@ from google.appengine.api import users
 from webapp2_extras import routes
 
 
+IS_DEV = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
+
+APPSPOT_DOMAIN = '%s.appspot.com' % app_identity.get_application_id()
+
+CUSTOM_DOMAIN = 'theelkos.com'
+
 JINJA_ENVIRONMENT = jinja2.Environment(
       autoescape=True,
       extensions=['jinja2.ext.autoescape'],
@@ -23,7 +29,9 @@ class WeddingSite(webapp2.RequestHandler):
       template_args = {}
       self.response.out.write(template.render(template_args))
     else:
-      self.response.out.write('<a href="%s">login</a>' % users.create_login_url())
+      self.response.out.write(
+          '<a href="%s">login</a>' % users.create_login_url())
+
 
 class WeddingAdminSite(webapp2.RequestHandler):
   
@@ -36,18 +44,27 @@ class WeddingAdminSite(webapp2.RequestHandler):
 class RedirectHandler(webapp2.RedirectHandler):
 
   def get(self):
-    self.redirect('https://%s.appspot.com' % app_identity.get_application_id())
+    self.redirect('https://%s/s/' % APPSPOT_DOMAIN)
 
 
-app = webapp2.WSGIApplication([
-    routes.DomainRoute('theelkos.com', [webapp2.Route('/', RedirectHandler)]),
-
+ROUTES = [ 
     # Main site handlers.
-    webapp2.Route('/', WeddingSite),
+    webapp2.Route('/', RedirectHandler),
+    webapp2.Route('/s/', WeddingSite),
     webapp2.Route('/api/invitation', handlers.InvitationHandler),
-    webapp2.Route('/api/food_choice', handlers.ManageFoodChoiceHandler, methods=['GET']),
+    webapp2.Route('/api/food_choice', handlers.ManageFoodChoiceHandler, 
+                  methods=['GET']),
     # Admin handlers.
     webapp2.Route('/admin', WeddingAdminSite),
     webapp2.Route('/admin/api/invitation', handlers.ManageInvitationHandler),
     webapp2.Route('/admin/api/food_choice', handlers.ManageFoodChoiceHandler),
-], debug=True)
+]
+
+
+if IS_DEV:
+  app = webapp2.WSGIApplication(ROUTES, debug=True)
+else:
+  app = webapp2.WSGIApplication([
+      routes.DomainRoute(CUSTOM_DOMAIN, [webapp2.Route('/', RedirectHandler)]),
+      routes.DomainRoute(APPSPOT_DOMAIN, ROUTES)
+  ])
