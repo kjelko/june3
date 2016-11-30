@@ -44,7 +44,7 @@ class WeddingAdminSite(webapp2.RequestHandler):
 class RedirectHandler(webapp2.RedirectHandler):
 
   def get(self):
-    self.redirect('https://%s/s/' % APPSPOT_DOMAIN)
+    self.redirect('https://%s/s/' % APPSPOT_DOMAIN if not IS_DEV else '/s/')
 
 
 ROUTES = [ 
