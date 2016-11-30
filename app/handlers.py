@@ -41,6 +41,11 @@ class FoodChoiceNotFoundError(Error):
   code = httplib.NOT_FOUND
 
 
+class NoFoodChoiceSelectionError(Error):
+  default_msg = 'Please select a food choice.'
+  code = httplib.BAD_REQUEST
+
+
 class InvalidRequestError():
   default_msg = ''
 
@@ -151,6 +156,8 @@ class InvitationHandler(JsonHandler):
       
       if rsvp == models.RsvpStatus.COMING:
         guest_ndb.rsvp = models.RsvpStatus.COMING
+        if not guest.get('food_choice'):
+          raise NoFoodChoiceSelectionError
         guest_ndb.food_choice = models.FoodChoice(id=guest.get('food_choice').get('id')).key
       
       elif rsvp == models.RsvpStatus.NOT_COMING:
