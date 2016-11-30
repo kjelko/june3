@@ -61,6 +61,7 @@ PageController.prototype.setLoading_ = function(opt_delay) {
 
 
 PageController.prototype.lookUpInvitation = function(event) {
+  this.errorMessage = null;
   if (!this.invitationCode || (this.invitation && this.invitationCode == this.invitation.code)) { return; }
   var config = {
     params: {
@@ -70,15 +71,21 @@ PageController.prototype.lookUpInvitation = function(event) {
   };
   this.http_.get('/api/invitation', config).then(function(resp) {
     this.invitation = resp.data;
+  }.bind(this), function(resp) {
+    this.errorMessage = resp.data.error;
+    this.window_.grecaptcha.reset();
   }.bind(this));
 };
 
 
 PageController.prototype.sendRsvp = function() {
+  this.errorMessage = null;
   if (!this.invitation) { return; }
   this.http_.post('/api/invitation', this.invitation).then(function(resp) {
     console.log(resp.data);
-  });
+  }.bind(this), function(resp) {
+    this.errorMessage = resp.data.error;
+  }.bind(this));
 };
 
 
