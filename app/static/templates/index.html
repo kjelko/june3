@@ -42,14 +42,16 @@
           <div class="address" ng-click="$ctrl.showVenue()" ng-class="{active: $ctrl.showingVenue}">
             <h4>
               <a href="http://www.prophecycreekmanor.com/">
-                The Manor House at Prophecy Creek Park <md-icon>open_in_new</md-icon>
+                The Manor House at Prophecy Creek Park
               </a>
             </h4>
-            <p>
+            <p class="md-caption">
               205 West Skippack Pike, (Route 73)<br>
-              Ambler, Pa. 19002<br>
-              <span class="md-caption"><a href="https://maps.google.com/maps?ll=40.14541,-75.250103&z=16&t=m&hl=en-US&gl=US&mapclient=embed&daddr=The%20Manor%20House%20at%20Prophecy%20Creek%20Park%20205%20W%20Skippack%20Pike%20Ambler%2C%20PA%2019002@40.14541,-75.250103">Directions</a></span>
+              Ambler, Pa. 19002
             </p>
+            <div>
+              <md-button href="https://maps.google.com/maps?ll=40.14541,-75.250103&z=16&t=m&hl=en-US&gl=US&mapclient=embed&daddr=The%20Manor%20House%20at%20Prophecy%20Creek%20Park%20205%20W%20Skippack%20Pike%20Ambler%2C%20PA%2019002@40.14541,-75.250103">Directions</md-button>
+            </div>
           </div>
         </div>
         <div>
@@ -57,24 +59,25 @@
           <div class="address" ng-click="$ctrl.showHotel()" ng-class="{active: !$ctrl.showingVenue}">
             <h4>
               <a href="http://www.marriott.com/hotels/travel/phlcy-courtyard-philadelphia-plymouth-meeting/">
-                Courtyard Philadelphia Plymouth Meeting <md-icon>open_in_new</md-icon>
+                Courtyard Philadelphia Plymouth Meeting
               </a>
             </h4>
-            <p>
+            <p class="md-caption">
               651 Fountain Road<br>
-              Plymouth Meeting, Pa. 19462<br>
-              <span class="md-caption">
-                <a href="https://maps.google.com/maps?ll=40.122177,-75.283163&z=16&t=m&hl=en-US&gl=US&mapclient=embed&daddr=Courtyard%20Philadelphia%20Plymouth%20Meeting%20651%20Fountain%20Rd%20Plymouth%20Meeting%2C%20PA%2019462@40.1221767,-75.283163">Directions</a> |
-                For reservations: <a href="tel:1-800-321-2211">1 (800) 321-2211</a></span>
+              Plymouth Meeting, Pa. 19462
             </p>
+            <div>
+              <md-button href="https://maps.google.com/maps?ll=40.122177,-75.283163&z=16&t=m&hl=en-US&gl=US&mapclient=embed&daddr=Courtyard%20Philadelphia%20Plymouth%20Meeting%20651%20Fountain%20Rd%20Plymouth%20Meeting%2C%20PA%2019462@40.1221767,-75.283163">Directions</md-button> <span class="divider">|</span>
+              <md-button href="http://www.marriott.com/meeting-event-hotels/group-corporate-travel/groupCorp.mi?resLinkData=Collins%20Elko%20Wedding%20Room%20Block%5Ephlcy%60CEWCEWA%7CCEWCEWB%60109.00-119.00%60USD%60false%601%606/3/17%606/4/17%605/13/17&app=resvlink&stop_mobi=yes">Make a reservation</md-button>
+            </div>
           </div>
         </div>
       </div>
       <div flex="50" layout="column" layout-align="stretch">
         <div ng-show="$ctrl.loadingMap"><md-progress-circular md-mode="indeterminate"></md-progress-circular></div>
-        <div ng-show="!$ctrl.loadingMap" style="margin-top:25px;">
-          <iframe ng-show="$ctrl.showingVenue" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3049.8594642353787!2d-75.25229168495976!3d40.145414080020075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6bc9dddab5417%3A0x74451dfec1110243!2sThe+Manor+House+at+Prophecy+Creek+Park!5e0!3m2!1sen!2sus!4v1480293384557" frameborder="0" style="border:0; height:415px; width:500px;" allowfullscreen></iframe>
-          <iframe ng-show="!$ctrl.showingVenue" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3050.909095384814!2d-75.28568578496048!3d40.12202928143425!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc2e42701c72c5141!2sCourtyard+Philadelphia+Plymouth+Meeting!5e0!3m2!1sen!2sus!4v1480378870381" frameborder="0" style="border:0; height:415px; width:500px;" allowfullscreen></iframe>
+        <div ng-show="!$ctrl.loadingMap">
+          <iframe ng-show="$ctrl.showingVenue" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3049.8594642353787!2d-75.25229168495976!3d40.145414080020075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c6bc9dddab5417%3A0x74451dfec1110243!2sThe+Manor+House+at+Prophecy+Creek+Park!5e0!3m2!1sen!2sus!4v1480293384557" frameborder="0" allowfullscreen></iframe>
+          <iframe ng-show="!$ctrl.showingVenue" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3050.909095384814!2d-75.28568578496048!3d40.12202928143425!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xc2e42701c72c5141!2sCourtyard+Philadelphia+Plymouth+Meeting!5e0!3m2!1sen!2sus!4v1480378870381" frameborder="0" allowfullscreen></iframe>
         </div>
 
       </div>
@@ -105,15 +108,23 @@
 
   <section id="rsvp">
     <h3><span>RSVP</span></h3>
-    <div ng-if="$ctrl.errorMessage" ng-bind="$ctrl.errorMessage"></div>
+
+    <div ng-show="$ctrl.errorMessage" ng-bind="$ctrl.errorMessage"></div>
+
     <div layout="row" layout-align="center center" ng-show="!$ctrl.invitation">
-      <form ng-submit="$ctrl.lookUpInvitation($event)">
-        <label>Invitation code</label>
-        <input type="text" ng-model="$ctrl.invitationCode">
-        <div class="g-recaptcha" data-sitekey="6Lc1Rw0UAAAAAE0Ny9GzKrFE6bukJoAbO-a82CGf"></div>
-        <md-button type="submit">Find invitation</md-button>
+        
+        <div ng-show="$ctrl.rsvpFormState == 'initial'">
+          <label>Invitation code</label>
+          <input type="text" ng-model="$ctrl.invitationCode">
+          <md-button ng-click="$ctrl.lookUpInvitation()">Find invitation</md-button>
+        </div>
+
+        <div ng-show="$ctrl.rsvpFormState == 'recaptcha'">  
+          <div id="recaptcha-container"></div>
+        </div>
       </form>
     </div>
+    
     <div ng-show="$ctrl.invitation">
       <div ng-repeat="guest in $ctrl.invitation.guests" layout="column" layout-align="space-between">
         <div ng-bind="guest.name"></div>

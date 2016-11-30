@@ -16,6 +16,12 @@ var PageController = function($window, $rootScope, $http) {
   this.invitation = null;
 
   this.foodChoices = [];
+
+  this.rsvpFormState = 'initial';
+
+  this.recaptchaId = 'recaptcha-container';
+
+  this.recaptchaKey = '6Lc1Rw0UAAAAAE0Ny9GzKrFE6bukJoAbO-a82CGf';
 };
 
 
@@ -27,7 +33,21 @@ PageController.prototype.$onInit = function() {
   this.http_.get('/api/food_choice').then(function(resp) {
     this.foodChoices = resp.data;
   }.bind(this));
+
+  //this.renderCaptcha();
 };
+
+
+// PageController.prototype.renderCaptcha = function() {
+//   if (!this.window_.grecaptcha) {
+//     setTimeout(this.renderCaptcha.bind(this), 10);
+//     return;
+//   }
+//   this.window_.grecaptcha.render(document.getElementById(this.recaptchaId), {
+//     callback: this.recaptchaSuccess_.bind(this),
+//     sitekey: this.recaptchaKey
+//   });
+// }
 
 
 PageController.prototype.updateShowArrow_ = function() {
@@ -60,13 +80,23 @@ PageController.prototype.setLoading_ = function(opt_delay) {
 };
 
 
-PageController.prototype.lookUpInvitation = function(event) {
+PageController.prototype.lookUpInvitation = function() {
   this.errorMessage = null;
-  if (!this.invitationCode || (this.invitation && this.invitationCode == this.invitation.code)) { return; }
+  if (!this.invitationCode) { return; }
+  this.window_.grecaptcha.render(document.getElementById(this.recaptchaId), {
+    callback: this.recaptchaSuccess_.bind(this),
+    sitekey: this.recaptchaKey
+  });
+  this.rsvpFormState = 'recaptcha';
+};
+
+
+PageController.prototype.recaptchaSuccess_ = function(gCaptchaResponse) {
+  console.log(arguments);
   var config = {
     params: {
       'code': this.invitationCode,
-      'g-recaptcha-response': event.target.elements['g-recaptcha-response'].value
+      'g-recaptcha-response': gCaptchaResponse
     }
   };
   this.http_.get('/api/invitation', config).then(function(resp) {
@@ -87,6 +117,7 @@ PageController.prototype.sendRsvp = function() {
 PageController.prototype.handleError_ = function(resp) {
   this.errorMessage = resp.data.error;
   this.window_.grecaptcha.reset();
+  this.rsvpFormState = 'initial';
 };
 
 angular.module('June3App', ['ngMaterial', 'duScroll'])
