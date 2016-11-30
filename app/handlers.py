@@ -247,7 +247,7 @@ def GetFoodChoice(food_choice_id):
 
 
 def GetInvitation(code):
-  invitation = models.Invitation.Get(code)
+  invitation = models.Invitation.Get(code.upper())
   if not invitation:
     raise InvitationNotFoundError
   return invitation
