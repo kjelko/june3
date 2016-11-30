@@ -71,10 +71,7 @@ PageController.prototype.lookUpInvitation = function(event) {
   };
   this.http_.get('/api/invitation', config).then(function(resp) {
     this.invitation = resp.data;
-  }.bind(this), function(resp) {
-    this.errorMessage = resp.data.error;
-    this.window_.grecaptcha.reset();
-  }.bind(this));
+  }.bind(this), this.handleError_.bind(this));
 };
 
 
@@ -83,11 +80,14 @@ PageController.prototype.sendRsvp = function() {
   if (!this.invitation) { return; }
   this.http_.post('/api/invitation', this.invitation).then(function(resp) {
     console.log(resp.data);
-  }.bind(this), function(resp) {
-    this.errorMessage = resp.data.error;
-  }.bind(this));
+  }.bind(this), this.handleError_.bind(this));
 };
 
+
+PageController.prototype.handleError_ = function(resp) {
+  this.errorMessage = resp.data.error;
+  this.window_.grecaptcha.reset();
+};
 
 angular.module('June3App', ['ngMaterial', 'duScroll'])
     .controller('PageController', ['$window', '$rootScope', '$http', PageController])
