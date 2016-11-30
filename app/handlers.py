@@ -110,9 +110,11 @@ class InvitationHandler(JsonHandler):
           headers={'Content-Type': 'application/x-www-form-urlencoded'})
       response = json.loads(result.content)
     except Exception:
+      logging.exception('reCAPTCHA error.')
       raise CaptchaError
 
-    if response.get('success'):
+    if not response.get('success'):
+      logging.error('reCAPTCHA not successfull: %s.', result.content)
       raise CaptchaError
 
     code = self.request.get('code')
