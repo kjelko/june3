@@ -40,11 +40,7 @@
         <div>
           <h3><span>Venue</span></h3>
           <div class="address" ng-click="$ctrl.showVenue()" ng-class="{active: $ctrl.showingVenue}">
-            <h4>
-              <a href="http://www.prophecycreekmanor.com/">
-                The Manor House at Prophecy Creek Park
-              </a>
-            </h4>
+            <h4>The Manor House at Prophecy Creek Park</h4>
             <p class="md-caption">
               205 West Skippack Pike, (Route 73)<br>
               Ambler, Pa. 19002
@@ -57,11 +53,7 @@
         <div>
           <h3><span>Hotel</span></h3>
           <div class="address" ng-click="$ctrl.showHotel()" ng-class="{active: !$ctrl.showingVenue}">
-            <h4>
-              <a href="http://www.marriott.com/hotels/travel/phlcy-courtyard-philadelphia-plymouth-meeting/">
-                Courtyard Philadelphia Plymouth Meeting
-              </a>
-            </h4>
+            <h4>Courtyard Philadelphia Plymouth Meeting</h4>
             <p class="md-caption">
               651 Fountain Road<br>
               Plymouth Meeting, Pa. 19462
@@ -114,8 +106,10 @@
     <div layout="row" layout-align="center center" ng-show="!$ctrl.invitation">
         
         <div ng-show="$ctrl.rsvpFormState == 'initial'">
-          <label>Invitation code</label>
-          <input type="text" ng-model="$ctrl.invitationCode">
+          <md-input-container>
+            <label>Invitation code</label>
+            <input type="text" ng-model="$ctrl.invitationCode">
+          </md-input-container>
           <md-button ng-click="$ctrl.lookUpInvitation()">Find invitation</md-button>
         </div>
 

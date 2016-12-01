@@ -83,7 +83,9 @@ PageController.prototype.setLoading_ = function(opt_delay) {
 PageController.prototype.lookUpInvitation = function() {
   this.errorMessage = null;
   if (!this.invitationCode) { return; }
-  this.window_.grecaptcha.render(document.getElementById(this.recaptchaId), {
+  var el = document.getElementById(this.recaptchaId)
+  el.innerHTML = '';  
+  this.window_.grecaptcha.render(el.appendChild(document.createElement('div')), {
     callback: this.recaptchaSuccess_.bind(this),
     sitekey: this.recaptchaKey
   });
