@@ -18,7 +18,7 @@
         <br><span>Theresa</span>
       </h1>
       <h2>June 3, 2017</h2>
-      <a href="#rsvp" du-smooth-scroll>RSVP</a>
+      <md-button href="#rsvp" du-smooth-scroll class="md-primary md-raised md-accent">RSVP</md-button>
     </div>
   </section>
 
@@ -100,47 +100,56 @@
 
   <section id="rsvp">
     <h3><span>RSVP</span></h3>
-
-    <div ng-show="$ctrl.errorMessage" ng-bind="$ctrl.errorMessage"></div>
-
-    <div layout="row" layout-align="center center" ng-show="!$ctrl.invitation">
-        
-        <div ng-show="$ctrl.rsvpFormState == 'initial'">
+    
+    <div layout="column" layout-align="center center">
+    
+      <form ng-submit="$ctrl.lookUpInvitation()" ng-show="$ctrl.rsvpFormState == 'initial'" layout="column" layout-align="center center">
+        <p ng-show="$ctrl.errorMessage" ng-bind="$ctrl.errorMessage" class="md-error"></p>
+        <p ng-show="!$ctrl.errorMessage">We hope you can join us!<br>Please enter your invitation code below to RSVP:</p>        
+        <div>
           <md-input-container>
             <label>Invitation code</label>
             <input type="text" ng-model="$ctrl.invitationCode">
           </md-input-container>
-          <md-button ng-click="$ctrl.lookUpInvitation()">Find invitation</md-button>
         </div>
 
-        <div ng-show="$ctrl.rsvpFormState == 'recaptcha'">  
-          <div id="recaptcha-container"></div>
-        </div>
-      </form>
-    </div>
-    
-    <div ng-show="$ctrl.invitation">
-      <div ng-repeat="guest in $ctrl.invitation.guests" layout="column" layout-align="space-between">
-        <div ng-bind="guest.name"></div>
         <div>
-          RSVP:
-          <md-radio-group ng-model="guest.rsvp">
-            <md-radio-button value="coming">Coming!</md-radio-button>
-            <md-radio-button value="not_coming">Sorry, can't make it.</md-radio-button>
-          </md-radio-group>
+          <md-button type="submit" class="md-primary md-raised md-accent">Find invitation</md-button>
         </div>
-        <div ng-if="guest.rsvp == 'coming'">
-          Food selection:
-          <md-radio-group ng-model="guest.food_choice.id">
-            <md-radio-button ng-repeat="food_choice in $ctrl.foodChoices" 
-                             ng-value="food_choice.id">
-              <span ng-bind="food_choice.name"></span>
-            </md-radio-button>
-          </md-radio-group>
-        </div>
+      
+      </form>
+
+      <div ng-show="$ctrl.rsvpFormState == 'recaptcha'">  
+        <div id="recaptcha-container"></div>
       </div>
-      <md-button ng-click="$ctrl.sendRsvp()">Submit</md-button>
-    </div>
+
+      <div ng-show="$ctrl.rsvpFormState == 'rsvp'">
+        <div ng-repeat="guest in $ctrl.invitation.guests" layout="column" layout-align="space-between">
+          <div ng-bind="guest.name"></div>
+          <div>
+            RSVP:
+            <md-radio-group ng-model="guest.rsvp">
+              <md-radio-button value="coming">Coming!</md-radio-button>
+              <md-radio-button value="not_coming">Sorry, can't make it.</md-radio-button>
+            </md-radio-group>
+          </div>
+          <div ng-if="guest.rsvp == 'coming'">
+            Food selection:
+            <md-radio-group ng-model="guest.food_choice.id">
+              <md-radio-button ng-repeat="food_choice in $ctrl.foodChoices" 
+                               ng-value="food_choice.id">
+                <span ng-bind="food_choice.name"></span>
+              </md-radio-button>
+            </md-radio-group>
+          </div>
+        </div>
+        <md-button ng-click="$ctrl.sendRsvp()" class="md-primary md-raised md-accent">Submit</md-button>
+      </div>
+
+      <div ng-show="$ctrl.rsvpFormState == 'final'">  
+        <p>Thank you for your response!</p>
+      </div>
+    <div>
   </section>
 
   <section class="footer" layout="column" layout-align="center center">

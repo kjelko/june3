@@ -136,16 +136,9 @@ section.hero {
       text-align: center;
     }
 
-    a {
-      background: #df862d;
-      color: #fff;
-      display: block;
-      padding: 10px 0;
-      text-align: center;
-    }
-
-    a:hover {
-      background: #fecb9c;
+    .md-button {
+      margin: 0;
+      width: 100%;
     }
   }
 }
@@ -194,4 +187,27 @@ section.footer {
   font-style: italic;
   font-weight: 100;
   margin: 0;
+}
+
+#rsvp {
+  > div {
+    min-height: 232px;
+  }
+
+  md-input-container {
+    margin-bottom: 10px;
+  }
+
+  md-input-container.md-input-focused label,
+  md-input-container.md-input-has-value label {
+    transform: translate3d(10%, 6px, 0) scale(.75);
+  }
+
+  .md-error {
+    color: red;
+  }
+
+  .md-errors-spacer {
+    display: none;
+  }
 }
