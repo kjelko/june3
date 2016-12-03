@@ -49,11 +49,20 @@ module.exports = function(grunt) {
     },
     concurrent: {
       watch: {
-        tasks: ['watch:styles', 'watch:scripts']
+        tasks: ['watch:styles', 'watch:scripts', 'exec:runDev']
+      }
+    },
+    exec: {
+      runDev: {
+        command: 'dev_appserver.py app'
+      },
+      deployProd: {
+        command: 'yes | gcloud app deploy ./app/app.yaml --project=the-elkos -v 0'
       }
     }
   });
 
+  grunt.loadNpmTasks('grunt-exec');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -67,6 +76,15 @@ module.exports = function(grunt) {
     'concat', 
     'uglify', 
     'clean:cleanUp',
-    'concurrent'
+    'concurrent',
+  ]);
+
+  grunt.registerTask('deploy', [
+    'sass',
+    'clean:startFresh', 
+    'concat', 
+    'uglify', 
+    'clean:cleanUp',
+    'exec:deployProd',
   ]);
 };
