@@ -170,7 +170,7 @@ AdminController.prototype.parseInivitations_ = function(resp) {
 
 AdminController.prototype.updateFoodChoice = function(foodChoice) {
   this.http_.post('/admin/api/food_choice', foodChoice).then(function() {
-    this.mdToast.shoSimple('Updated');
+    this.mdToast.showSimple('Updated');
   }.bind(this));
 };
 
