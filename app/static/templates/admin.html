@@ -1,4 +1,74 @@
 {% extends "base.html" %}
 
 {% block title %}Hello{% endblock %}
-{% block body %}<h2>Hello</h2>{% endblock %}
+{% block body %}
+  <body ng-app="June3App" ng-controller="AdminController as $ctrl" ng-cloak>
+    <div ng-show="$ctrl.isLoading" layout="row" layout-align="center center"><md-progress-circular></md-progress-circular></div>
+    <md-content layout="row" layout-align="stretch stretch" ng-show="!$ctrl.isLoading">
+      <md-card flex="30">
+        <md-card-title>Summary</md-card-title>
+        <md-card-content>
+          <ul>
+            <li>Number of guests invited: <span ng-bind="$ctrl.stats.numGuests"></span></li>
+            <li>Number of guests responded: <span ng-bind="$ctrl.stats.numResponded"></span></li>
+            <li>Number of guests attending: <span ng-bind="$ctrl.stats.numAttending"></span></li>
+            <li>Food
+              <ul>
+                <li ng-repeat="(food_choice, count) in $ctrl.stats.foodChoices" ng-bind="food_choice + ': ' + count"></li>
+              </ul>
+            </li>
+          </ul>
+        </md-card-content>
+      </md-card>
+      <md-card flex="60">
+        <md-card-title>Details</md-card-title>
+        <md-card-content>
+          <table>
+            <tr>
+              <td></td>
+              <td>Guest name</td>
+              <td>RSVP</td>
+              <td>Food choice</td>
+            </tr>
+            <tr ng-repeat="guest in $ctrl.guests">
+              <td ng-bind="$index + 1 + '.'"></td>
+              <td ng-bind="guest.name"></td>
+              <td ng-bind="guest.rsvp == 'coming' ? 'Yes' : 'No'"></td>
+              <td ng-bind="guest.food_choice ? guest.food_choice.name : ''"></td>
+            </tr>
+          </table>        
+        </md-card-content>
+      </md-card>
+    </md-content>
+    <md-content layout="row">
+      <md-card>
+        <md-card-title>Food choices</md-card-title>
+        <md-card-content>
+          <form ng-repeat="foodChoice in $ctrl.foodChoices" ng-submit="$ctrl.updateFoodChoice(foodChoice)">
+            <md-input-container>
+              <label>Name</label>
+              <input ng-model="foodChoice.name">
+            </md-input-container>
+            <md-input-container>
+              <label>Description</label>
+              <textarea ng-model="foodChoice.description"></textarea>
+            </md-input-container>
+            <md-button type="submit">Update</md-button>
+            <md-button ng-click="$ctrl.deleteFoodChoice(foodChoice)">Delete</md-button>
+          </form>
+          <form ng-submit="$ctrl.createFoodChoice($event)">
+            <md-input-container>
+              <label>Name</label>
+              <input name="name">
+            </md-input-container>
+            <md-input-container>
+              <label>Description</label>
+              <textarea name="description"></textarea>
+            </md-input-container>
+            <md-button type="submit">Add</md-button>
+          </form>
+        </md-card-content>
+      </md-card>
+    </md-content>
+  </body>
+{% endblock %}

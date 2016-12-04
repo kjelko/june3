@@ -3,6 +3,8 @@
 {% block title %}Kevin &amp; Theresa | June 3rd, 2017{% endblock %}
 
 {% block body %}
+  <script src='//www.google.com/recaptcha/api.js?render=explicit'></script>
+  <body ng-app="June3App" ng-controller="PageController as $ctrl" ng-cloak id="top">
   <nav>
     <a href="#story" du-smooth-scroll>Our story</a>
     <a href="#logistics" du-smooth-scroll>Logistics</a>
@@ -157,4 +159,5 @@
       Thank you!
     </div>
   </section>
+  </body>
 {% endblock %}
