@@ -226,22 +226,23 @@ class ManageInvitationHandler(JsonHandler):
 class ManageFoodChoiceHandler(JsonHandler):
 
   def HandleGet(self):
-    food_choice_id = self.request.get('food_choice_id')
+    food_choice_id = self.request.get('id')
     if food_choice_id:
       return GetFoodChoice(food_choice_id).to_dict()
     else:
       return [f.to_dict() for f in models.FoodChoice.query().iter()]
 
   def HandlePost(self):
-    food_choice_id = self.request.get('food_choice_id')
-    food_choice = (GetInvitation(food_choice_id) if food_choice_id else
+    food_choice_id = self.request.get('id')
+    food_choice = (GetFoodChoice(food_choice_id) if food_choice_id else
                    models.FoodChoice())
     food_choice.name = self.request.get('name')
-    food_choice.name = self.request.get('description')
+    food_choice.description = self.request.get('description')
     food_choice.put()
+    return food_choice.to_dict()
 
   def HandleDelete(self):
-    food_choice_key = GetFoodChoice(self.request.get('food_choice_id')).key
+    food_choice_key = GetFoodChoice(self.request.get('id')).key
     q = models.Guest.query().filter(models.Guest.food_choice == food_choice_key)
     for guest in q.iter():
       guest.food_choice = None
@@ -250,6 +251,7 @@ class ManageFoodChoiceHandler(JsonHandler):
 
 
 def GetFoodChoice(food_choice_id):
+  print food_choice_id
   food_choice = models.FoodChoice.get_by_id(AsInt(food_choice_id))
   if not food_choice:
     raise FoodChoiceNotFoundError
