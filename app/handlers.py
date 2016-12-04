@@ -217,7 +217,10 @@ class ManageInvitationHandler(JsonHandler):
     return invitation.to_dict()  
 
   def HandleDelete(self):
-    GetInvitation(self.request.get('code')).key.delete()
+    invitation = GetInvitation(self.request.get('code'))
+    for guest in invitation.guests:
+      guest.key.delete()
+    invitation.key.delete()
 
 
 class ManageFoodChoiceHandler(JsonHandler):
