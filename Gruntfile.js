@@ -11,7 +11,12 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['app/static/js/*.js', 'app/static/js/**/*.js'],
+        src: [
+          'app/static/js/*_service.js',
+          'app/static/js/*_controller.js',
+          'app/static/js/config.js',
+          'app/static/js/app.js'
+        ],
         dest: 'app/static/js/script-concat.min.js'
       }
     },
