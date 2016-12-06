@@ -65,6 +65,8 @@ if IS_DEV:
   app = webapp2.WSGIApplication(ROUTES, debug=True)
 else:
   app = webapp2.WSGIApplication([
-      routes.DomainRoute(CUSTOM_DOMAIN, [webapp2.Route('/', RedirectHandler)]),
+      routes.DomainRoute('<:(www.%s|%s)>' % (CUSTOM_DOMAIN, CUSTOM_DOMAIN), [
+          webapp2.Route('/', RedirectHandler)
+      ]),
       routes.DomainRoute(APPSPOT_DOMAIN, ROUTES)
   ])
