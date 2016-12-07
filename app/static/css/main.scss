@@ -1,10 +1,12 @@
+@import 'vars';
+
 html, 
 body {
   height: 100%;
 }
 
 body {
-  color: #444;  
+  color: #444;
   margin: 0;
 }
 
@@ -15,7 +17,7 @@ h1, h2, h3, h4, h5, nav a {
 a,
 a:visited, 
 a.md-button { 
-  color: #adc67b;
+  color: $color-green;
 }
 
 a {
@@ -41,7 +43,7 @@ nav {
   z-index: 999;
 
   a {
-    color: #222 !important;
+    color: $color-gray !important;
     display: inline-block;
     padding: 10px 20px;
     margin: 5px 10px;
@@ -72,7 +74,7 @@ section {
   }
 
   > h3 {
-    color: #fecb9c;
+    color: $color-orange-light;
   }
 
   h3 {
@@ -99,7 +101,7 @@ section.hero {
 
   div {
     background: rgba(255, 255, 255, .4);
-    color: #222;
+    color: $color-gray;
     max-width: 300px;
     padding: 15px 35px;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, .3);
@@ -116,7 +118,7 @@ section.hero {
       }
 
       .ampersand {
-        color: #adc67b;
+        color: $color-green;
         text-shadow: 1px 1px rgba(0,0,0,0.6);
         font-family: 'Libre Baskerville', serif;
         font-size: 130px;
@@ -180,8 +182,8 @@ section.hero {
 }
 
 section.footer {
-  background: #adc67b;
-  color: #fff;
+  background: $color-green;
+  color: $color-white;
   font-family: 'Libre Baskerville', serif;
   font-size: 110px;
   font-style: italic;
@@ -204,7 +206,7 @@ section.footer {
   }
 
   .md-error {
-    color: red;
+    color: $color-red;
   }
 
   .md-errors-spacer {
