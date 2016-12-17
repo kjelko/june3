@@ -1,0 +1,55 @@
+@import 'vars';
+
+@media screen and (max-width: 980px) {
+  #logistics {
+    div, p {
+      display: block;
+      max-width: 100%;
+    }
+
+    .logistics-map {
+      display: none;
+    }
+
+    .address:hover,
+    .address.active {
+      background: #fff !important;
+    }
+  }
+}
+
+@media screen and (max-width: 650px) {
+  
+  nav {
+    a {
+      padding: 10px 20px;
+      margin: 0; 
+      font-size: 12px;
+    }
+
+    a[href="#top"] {
+      display: none;
+    }
+  }
+
+  #logistics {
+    .divider {
+      display: none;
+    }
+  }
+
+  #registry {
+    div, p {
+      display: block;
+      max-width: 100%;
+    }
+
+    img {
+      max-width: 75%;
+    }
+  }
+
+  section.footer {
+    font-size: 60px !important;
+  }
+}
