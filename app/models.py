@@ -42,6 +42,7 @@ class Guest(JsonMixin, ndb.Model):
   name = ndb.StringProperty(default='Guest')
   food_choice = ndb.KeyProperty(kind=FoodChoice)
   rsvp = ndb.StringProperty(default=RsvpStatus.NO_RESPONSE)
+  dietary_notes = ndb.StringProperty()
 
 
 class Invitation(JsonMixin, ndb.Model):
