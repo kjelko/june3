@@ -53,8 +53,11 @@ module.exports = function(grunt) {
       }
     },
     concurrent: {
-      watch: {
+      watchAndRun: {
         tasks: ['watch:styles', 'watch:scripts', 'exec:runDev']
+      },
+      watch: {
+        tasks: ['watch:styles', 'watch:scripts']
       }
     },
     exec: {
@@ -81,7 +84,16 @@ module.exports = function(grunt) {
     'concat', 
     'uglify', 
     'clean:cleanUp',
-    'concurrent',
+    'concurrent:watchAndRun',
+  ]);
+
+  grunt.registerTask('localWatch', [
+    'sass',
+    'clean:startFresh', 
+    'concat', 
+    'uglify', 
+    'clean:cleanUp',
+    'concurrent:watch',
   ]);
 
   grunt.registerTask('deploy', [
