@@ -24,7 +24,6 @@ AdminController = function ($rootScope, $http, $mdToast) {
 
 AdminController.prototype.$onInit = function() {
   this.http_.get('/admin/api/invitation').then(this.parseInivitations_.bind(this));
-
   this.http_.get('/api/food_choice').then(function(resp) {
     this.foodChoices = resp.data || [];
   }.bind(this));
@@ -32,6 +31,7 @@ AdminController.prototype.$onInit = function() {
 
 
 AdminController.prototype.parseInivitations_ = function(resp) {
+  this.guests = [];
   this.invitations = resp.data;
   for (var i = 0; i < this.invitations.length; i++) {
     for (var j = 0; j < this.invitations[i].guests.length; j++) {
@@ -41,9 +41,9 @@ AdminController.prototype.parseInivitations_ = function(resp) {
         this.stats.numAttending++;
         this.stats.numResponded++;
         if (guest.food_choice) {
-          this.foodChoices[guest.food_choice.name] = 
-              this.foodChoices[guest.food_choice.name] || 0;
-          this.foodChoices[guest.food_choice.name]++;
+          this.stats.foodChoices[guest.food_choice.name] = 
+              this.stats.foodChoices[guest.food_choice.name] || 0;
+          this.stats.foodChoices[guest.food_choice.name]++;
         } 
       } else if (guest.rsvp == 'not_coming') {
         this.stats.numResponded++;
@@ -85,4 +85,22 @@ AdminController.prototype.deleteFoodChoice = function(foodChoice) {
     }
     this.mdToast.showSimple('Deleted');
   }.bind(this));
+};
+
+AdminController.prototype.uploadGuestList = function() {
+  var config = {
+    transformRequest: angular.identity,
+    headers: {'Content-Type': undefined}
+  };
+  var input = document.createElement('input');
+  input.type = 'file';
+  input.addEventListener('change', function() {
+    var data = new FormData();
+    data.append('csv', input.files[0]);
+    this.http_.post('/admin/api/invitation/bulk', data, config).then(function() {
+      this.isLoading = true;
+      setTimeout(this.$onInit.bind(this), 1000);
+    }.bind(this));
+  }.bind(this));
+  input.click();
 };

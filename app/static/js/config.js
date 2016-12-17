@@ -1,4 +1,6 @@
-var config = function($mdThemingProvider) {
+var config = function($mdThemingProvider, $interpolateProvider) {
+
+  $interpolateProvider.startSymbol('%%').endSymbol('%%');
 
   $mdThemingProvider.definePalette('june3Primary', 
     $mdThemingProvider.extendPalette('green', {
@@ -16,5 +18,4 @@ var config = function($mdThemingProvider) {
     .primaryPalette('june3Primary', {'default': '600'})
     .accentPalette('june3Accent', {'default': '600'})
     .warnPalette('red', {'default': '600'});
-
 };

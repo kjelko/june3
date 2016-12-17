@@ -1,3 +1,4 @@
+import csv
 import httplib
 import json
 import logging
@@ -70,7 +71,13 @@ class JsonHandler(webapp2.RequestHandler):
 
     if handler_method:
       if method == 'post':
-        self.request = json.loads(self.request.body)
+        try:
+          request = json.loads(self.request.body or '')
+        except ValueError:
+          request = {}
+        for key, list_value in self.request.POST.dict_of_lists().iteritems():
+          request[key] = list_value[0] if len(list_value) == 1 else list_value
+        self.request = request
       try:
         resp = handler_method(*args, **kwargs)
       except Error as e:
@@ -83,8 +90,8 @@ class JsonHandler(webapp2.RequestHandler):
     else:
       self.response.status = 501
     
-    self.response.headers['Content-type'] = 'application/json'
     if resp:
+      self.response.headers['Content-type'] = 'application/json'
       self.response.out.write(json.dumps(resp))
 
 
@@ -221,6 +228,47 @@ class ManageInvitationHandler(JsonHandler):
     for guest in invitation.guests:
       guest.key.delete()
     invitation.key.delete()
+
+
+class BulkInvitationHandler(JsonHandler):
+  """Handles bulk csv upload of guests."""
+
+  def HandleGet(self):
+    """Produces a downloadable csv file of guests."""
+    self.response.headers['Content-type'] = 'text/csv'
+    food_choices = list(models.FoodChoice.query().fetch())
+    fieldnames = ['GUEST NAME'] + [f.name for f in food_choices]
+    csv_writer = csv.DictWriter(self.response.out, fieldnames=fieldnames)
+    csv_writer.writeheader()
+    for invitation in models.Invitation.query().iter():
+      guests = [g.get() for g in invitation.guests]
+      row = {'GUEST NAME': ' & '.join([g.name for g in guests])}
+      for food_choice in food_choices:
+        row[food_choice.name] = len([g for g in guests if g.food_choice == food_choice.key])
+      csv_writer.writerow(row)
+
+  def HandlePost(self):
+    """Parses a csv file and creates invitations.
+
+    CSV file should be in the following form:
+
+    guest_name_1, guest_name_2
+    guest_name_3
+    guest_name_4, guest_name_5, guest_name_6
+
+    POST Args:
+      csv: The csv file to parse.
+    """
+    csv_rows = csv.reader(self.request.get('csv').file)
+    for row in csv_rows:
+      print row
+      if row:
+        invitation = models.Invitation.Create()
+        print invitation
+        for guest_name in row:
+          invitation.guests.append(models.Guest(name=guest_name).put())
+        print invitation
+        invitation.put()
 
 
 class ManageFoodChoiceHandler(JsonHandler):

@@ -57,6 +57,8 @@ ROUTES = [
     # Admin handlers.
     webapp2.Route('/admin', WeddingAdminSite),
     webapp2.Route('/admin/api/invitation', handlers.ManageInvitationHandler),
+    webapp2.Route('/admin/api/invitation/bulk',
+                  handlers.BulkInvitationHandler),
     webapp2.Route('/admin/api/food_choice', handlers.ManageFoodChoiceHandler),
 ]
 

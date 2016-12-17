@@ -5,44 +5,67 @@
   <body ng-app="June3App" ng-controller="AdminController as $ctrl" ng-cloak>
     <div ng-show="$ctrl.isLoading" layout="row" layout-align="center center"><md-progress-circular></md-progress-circular></div>
     <md-content layout="row" layout-align="stretch stretch" ng-show="!$ctrl.isLoading">
-      <md-card flex="30">
-        <md-card-title>Summary</md-card-title>
-        <md-card-content>
-          <ul>
-            <li>Number of guests invited: <span ng-bind="$ctrl.stats.numGuests"></span></li>
-            <li>Number of guests responded: <span ng-bind="$ctrl.stats.numResponded"></span></li>
-            <li>Number of guests attending: <span ng-bind="$ctrl.stats.numAttending"></span></li>
-            <li>Food
-              <ul>
-                <li ng-repeat="(food_choice, count) in $ctrl.stats.foodChoices" ng-bind="food_choice + ': ' + count"></li>
-              </ul>
-            </li>
-          </ul>
-        </md-card-content>
-      </md-card>
-      <md-card flex="60">
-        <md-card-title>Details</md-card-title>
-        <md-card-content>
-          <table>
-            <tr>
-              <td></td>
-              <td>Guest name</td>
-              <td>RSVP</td>
-              <td>Food choice</td>
-            </tr>
-            <tr ng-repeat="guest in $ctrl.guests">
-              <td ng-bind="$index + 1 + '.'"></td>
-              <td ng-bind="guest.name"></td>
-              <td ng-bind="guest.rsvp == 'coming' ? 'Yes' : 'No'"></td>
-              <td ng-bind="guest.food_choice ? guest.food_choice.name : ''"></td>
-            </tr>
-          </table>        
-        </md-card-content>
-      </md-card>
-    </md-content>
-    <md-content layout="row">
+      <md-content class="admin-sidebar">
+        <md-card class="admin-summary">
+          <md-toolbar><div class="md-toolbar-tools"><h3>Summary</h3></div></md-toolbar>
+          <md-card-content>Guests invited <span ng-bind="$ctrl.stats.numGuests"></span></md-card-content>
+          <md-card-content>Responses received <span ng-bind="$ctrl.stats.numResponded"></span></md-card-content>
+          <md-card-content>Guests attending <span ng-bind="$ctrl.stats.numAttending"></span></md-card-content>
+          <md-card-content>Food</md-card-content>
+          <md-card-content class="admin-summary-secondary" 
+                           ng-repeat="(food_choice, count) in $ctrl.stats.foodChoices">
+            %%food_choice%% <span ng-bind="count"></span>
+          </md-card-content>
+        </md-card>
+        <md-card>
+          <md-button href="/admin/api/invitation/bulk">Export guest list</md-button>
+        </md-card>
+        <md-card>
+          <md-button ng-click="$ctrl.uploadGuestList()">Upload guest list</md-button>
+        </md-card>
+      </md-content>
+      <md-content flex="grow">
       <md-card>
-        <md-card-title>Food choices</md-card-title>
+        <md-toolbar><div class="md-toolbar-tools"><h3>Details</h3></div></md-toolbar>
+        <md-card-content class="admin-guest-table">
+          <table>
+            <colgroup>
+              <col class="guest-number">
+              <col class="guest-name">
+              <col class="guest-rsvp">
+              <col class="guest-food">
+            </colgroup>
+            <thead>
+              <tr>
+                <th></th>
+                <th>Guest name</th>
+                <th>RSVP</th>
+                <th>Food choice</th>
+              </tr>
+            </thead>
+          </table>
+          <div class="admin-guest-table-data">
+            <table>
+              <colgroup>
+                <col class="guest-number">
+                <col class="guest-name">
+                <col class="guest-rsvp">
+                <col class="guest-food">
+              </colgroup>
+              <tbody>
+                <tr ng-repeat="guest in $ctrl.guests">
+                  <td ng-bind="$index + 1 + '.'"></td>
+                  <td ng-bind="guest.name"></td>
+                  <td ng-bind="guest.rsvp == 'coming' ? 'Yes' : 'No'"></td>
+                  <td ng-bind="guest.food_choice ? guest.food_choice.name : ''"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>        
+        </md-card-content>
+      </md-card>
+      <md-card>
+        <md-toolbar><div class="md-toolbar-tools"><h3>Food choices</h3></div></md-toolbar>
         <md-card-content>
           <form ng-repeat="foodChoice in $ctrl.foodChoices" ng-submit="$ctrl.updateFoodChoice(foodChoice)">
             <md-input-container>

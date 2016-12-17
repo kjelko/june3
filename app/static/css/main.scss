@@ -16,7 +16,7 @@ h1, h2, h3, h4, h5, nav a {
 
 a,
 a:visited, 
-a.md-button { 
+.md-button { 
   color: $color-green;
 }
 
@@ -161,7 +161,7 @@ section.hero {
 
   .address:hover,
   .address.active {
-    background: whitesmoke;
+    background: $color-offwhite;
   }
 
   .divider {
@@ -196,6 +196,10 @@ section.footer {
     min-height: 232px;
   }
 
+  input {
+    text-align: center;
+  }
+
   md-input-container {
     margin-bottom: 10px;
   }
@@ -211,5 +215,64 @@ section.footer {
 
   .md-errors-spacer {
     display: none;
+  }
+}
+
+.admin-sidebar {
+  width: 415px;
+
+  .admin-summary {
+    md-card-content {
+      border-bottom: 1px solid rgba(0, 0, 0, .03);
+      
+      span {
+        float: right;
+        font-weight: bold;
+      }
+    }
+
+    .admin-summary-secondary {
+      background: $color-offwhite;
+      padding-left: 40px;
+    }
+  }
+
+}
+
+.admin-guest-table {
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    .guest-number {
+      text-align: center;
+      width: 40px;
+    }
+
+    .guest-rsvp {
+      width: 40px;
+    }
+
+    .guest-food {
+      width: 200px;
+    }
+
+    tr:nth-child(even) {
+      background: $color-offwhite;
+    } 
+
+    th {
+      background: $color-orange-light;
+    }
+
+    td, th {
+      padding: 8px;
+    }
+  }
+
+  .admin-guest-table-data {
+    max-height: 425px;
+    overflow-y: scroll;
   }
 }

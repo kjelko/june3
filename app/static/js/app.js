@@ -5,5 +5,5 @@ angular.module('June3App', ['ngMaterial', 'duScroll'])
   .controller('AdminController', [
         '$rootScope', '$http', '$mdToast', AdminController
   ])
-  .config(['$mdThemingProvider', config])
+  .config(['$mdThemingProvider', '$interpolateProvider', config])
   .value('duScrollOffset', 54);
