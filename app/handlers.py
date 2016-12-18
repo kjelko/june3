@@ -266,7 +266,8 @@ class BulkInvitationHandler(JsonHandler):
         invitation = models.Invitation.Create()
         print invitation
         for guest_name in row:
-          invitation.guests.append(models.Guest(name=guest_name).put())
+          if guest_name:
+            invitation.guests.append(models.Guest(name=guest_name).put())
         print invitation
         invitation.put()
 

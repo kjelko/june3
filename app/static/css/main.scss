@@ -39,6 +39,7 @@ nav {
   box-shadow: 0 3px 15px rgba(0, 0, 0, .4);
   position: fixed;
   text-align: center;
+  top: 0;
   width: 100%;
   z-index: 999;
 
@@ -145,6 +146,29 @@ section.hero {
   }
 }
 
+#story {
+  
+  > div {
+    background: $color-offwhite;
+  }
+
+  .story {
+    padding: 5px 25px;
+    text-align: left;
+  
+    p:first-child:first-letter { 
+      color: $color-green;
+      float: left; 
+      font-family: 'Libre Baskerville', serif;
+      font-size: 80px;
+      line-height: 75px;
+      padding: 0 15px 0 0;
+    }
+  }
+
+
+}
+
 #logistics {
   iframe {
     border: 0px;
@@ -196,16 +220,16 @@ section.footer {
     min-height: 232px;
   }
 
-  input {
-    text-align: center;
-  }
-
-  md-input-container {
+  md-input-container.invitation-code {
+    input {
+      text-align: center;
+      text-transform: uppercase;
+    }
     margin-bottom: 10px;
   }
 
-  md-input-container.md-input-focused label,
-  md-input-container.md-input-has-value label {
+  md-input-container.invitation-code.md-input-focused label,
+  md-input-container.invitation-code.md-input-has-value label {
     transform: translate3d(10%, 6px, 0) scale(.75);
   }
 
@@ -215,6 +239,26 @@ section.footer {
 
   .md-errors-spacer {
     display: none;
+  }
+
+  .rsvp-form {
+    text-align: left;
+
+    .guest-name {
+      width: 250px;
+    }
+
+    .guest-rsvp {
+      width: 180px;
+    }
+
+    .guest-food {
+      width: 250px;
+    }
+
+    .guest-notes {
+      width: 150px;
+    }
   }
 }
 
@@ -245,13 +289,13 @@ section.footer {
     border-collapse: collapse;
     width: 100%;
 
-    .guest-number {
-      text-align: center;
+    .guest-number,
+    .guest-rsvp {
       width: 40px;
     }
 
-    .guest-rsvp {
-      width: 40px;
+    .guest-code {
+      width: 100px;
     }
 
     .guest-food {
@@ -264,6 +308,7 @@ section.footer {
 
     th {
       background: $color-orange-light;
+      text-align: left;
     }
 
     td, th {

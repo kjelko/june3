@@ -32,6 +32,7 @@
           <table>
             <colgroup>
               <col class="guest-number">
+              <col class="guest-code">
               <col class="guest-name">
               <col class="guest-rsvp">
               <col class="guest-food">
@@ -39,6 +40,7 @@
             <thead>
               <tr>
                 <th></th>
+                <th>code</th>
                 <th>Guest name</th>
                 <th>RSVP</th>
                 <th>Food choice</th>
@@ -49,6 +51,7 @@
             <table>
               <colgroup>
                 <col class="guest-number">
+                <col class="guest-code">
                 <col class="guest-name">
                 <col class="guest-rsvp">
                 <col class="guest-food">
@@ -56,8 +59,9 @@
               <tbody>
                 <tr ng-repeat="guest in $ctrl.guests">
                   <td ng-bind="$index + 1 + '.'"></td>
+                  <td ng-bind="guest.code"></td>
                   <td ng-bind="guest.name"></td>
-                  <td ng-bind="guest.rsvp == 'coming' ? 'Yes' : 'No'"></td>
+                  <td ng-bind="guest.rsvp == 'coming' ? 'Yes' : guest.rsvp == 'not_coming' ? 'No' : '--'"></td>
                   <td ng-bind="guest.food_choice ? guest.food_choice.name : ''"></td>
                 </tr>
               </tbody>

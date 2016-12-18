@@ -4,7 +4,7 @@ var config = function($mdThemingProvider, $interpolateProvider) {
 
   $mdThemingProvider.definePalette('june3Primary', 
     $mdThemingProvider.extendPalette('green', {
-      '600': '#adc67b'
+      '600': '#a5bdb5'
     }));
   
   $mdThemingProvider.definePalette('june3Accent', 

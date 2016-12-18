@@ -96,6 +96,28 @@ PageController.prototype.recaptchaSuccess_ = function(gCaptchaResponse) {
 PageController.prototype.sendRsvp = function() {
   this.errorMessage = null;
   if (!this.invitation) { return; }
+
+  var errMessages = [];
+  for (var i = 0; i < this.invitation.guests.length; i++) {
+    if (this.invitation.guests[i].rsvp != 'coming' &&
+        this.invitation.guests[i].rsvp != 'not_coming') {
+      console.log(this.invitation.guests[i]);
+      errMessages[0] = 'Please RSVP for all guests.'
+    }
+    if ((this.invitation.guests[i].rsvp == 'coming' && 
+        !this.invitation.guests[i].food_choice)) {
+      errMessages[1]= 'Please make a food selection.';
+    }
+  }
+
+  console.log(this.invitation);
+
+  if (errMessages.length) {
+    this.errorMessage = errMessages.join(' ');
+    return;
+  }
+
+  this.errorMessage = '';
   this.http_.post('/api/invitation', this.invitation).then(function(resp) {
     this.invitation = null;
     this.invitationCode = null;

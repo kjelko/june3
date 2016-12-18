@@ -36,6 +36,7 @@ AdminController.prototype.parseInivitations_ = function(resp) {
   for (var i = 0; i < this.invitations.length; i++) {
     for (var j = 0; j < this.invitations[i].guests.length; j++) {
       var guest = this.invitations[i].guests[j];
+      guest.code = this.invitations[i].code;
       this.guests.push(guest);
       if (guest.rsvp == 'coming') {
         this.stats.numAttending++;
@@ -95,10 +96,10 @@ AdminController.prototype.uploadGuestList = function() {
   var input = document.createElement('input');
   input.type = 'file';
   input.addEventListener('change', function() {
+    this.isLoading = true;
     var data = new FormData();
     data.append('csv', input.files[0]);
     this.http_.post('/admin/api/invitation/bulk', data, config).then(function() {
-      this.isLoading = true;
       setTimeout(this.$onInit.bind(this), 1000);
     }.bind(this));
   }.bind(this));
