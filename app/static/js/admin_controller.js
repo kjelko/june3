@@ -72,7 +72,10 @@ AdminController.prototype.createFoodChoice = function(event) {
     foodChoice.name.value = '';
     foodChoice.description.value = '';
     this.foodChoices.push(resp.data);
-    this.mdToast.showSimple('Created');
+    this.mdToast.show(this.mdToast.simple()
+      .textContent('Deleted')
+      .position('bottom right')
+      .parent(document.getElementById('food-choices')));
   }.bind(this));
 };
 
@@ -84,7 +87,10 @@ AdminController.prototype.deleteFoodChoice = function(foodChoice) {
         this.foodChoices.splice(i, 1);
       }
     }
-    this.mdToast.showSimple('Deleted');
+    this.mdToast.show(this.mdToast.simple()
+      .textContent('Deleted')
+      .position('bottom right')
+      .parent(document.getElementById('food-choices')));
   }.bind(this));
 };
 
