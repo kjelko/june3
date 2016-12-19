@@ -22,6 +22,8 @@ var PageController = function($window, $rootScope, $http) {
   this.recaptchaId = 'recaptcha-container';
 
   this.recaptchaKey = '6Lc1Rw0UAAAAAE0Ny9GzKrFE6bukJoAbO-a82CGf';
+
+  this.recaptchaResponse_ = '';
 };
 
 
@@ -87,6 +89,7 @@ PageController.prototype.recaptchaSuccess_ = function(gCaptchaResponse) {
     }
   };
   this.http_.get('/api/invitation', config).then(function(resp) {
+    this.recaptchaResponse_ = gCaptchaResponse;
     this.invitation = resp.data;
     this.rsvpFormState = 'rsvp';
   }.bind(this), this.handleError_.bind(this));
@@ -101,7 +104,6 @@ PageController.prototype.sendRsvp = function() {
   for (var i = 0; i < this.invitation.guests.length; i++) {
     if (this.invitation.guests[i].rsvp != 'coming' &&
         this.invitation.guests[i].rsvp != 'not_coming') {
-      console.log(this.invitation.guests[i]);
       errMessages[0] = 'Please RSVP for all guests.'
     }
     if ((this.invitation.guests[i].rsvp == 'coming' && 
@@ -110,15 +112,14 @@ PageController.prototype.sendRsvp = function() {
     }
   }
 
-  console.log(this.invitation);
-
   if (errMessages.length) {
     this.errorMessage = errMessages.join(' ');
     return;
   }
 
   this.errorMessage = '';
-  this.http_.post('/api/invitation', this.invitation).then(function(resp) {
+  var params = {invitation: this.invitation, token: this.recaptchaResponse_};
+  this.http_.post('/api/invitation', params).then(function(resp) {
     this.invitation = null;
     this.invitationCode = null;
     this.rsvpFormState = 'final';

@@ -6,6 +6,7 @@ import models
 import urllib
 import webapp2
 
+from google.appengine.api import memcache
 from google.appengine.api import urlfetch
 
 
@@ -20,6 +21,11 @@ class Error(Exception):
 class NoInvitationSpecifiedError(Error):
   default_msg = 'No invitation code was specified.'
   code = httplib.BAD_REQUEST
+
+
+class ExpiredTokenError(Error):
+  default_msg = 'Token expired. Please refresh and try again.'
+  code = httplib.FORBIDDEN
 
 
 class CaptchaError(Error):
@@ -130,6 +136,7 @@ class InvitationHandler(JsonHandler):
       raise CaptchaError
 
     code = self.request.get('code')
+    memcache.add(g_captcha_response, code, 600)
     if not code:
       raise NoInvitationSpecifiedError
     return GetInvitation(code).to_dict()
@@ -143,17 +150,23 @@ class InvitationHandler(JsonHandler):
     Returns:
       updated invitation info.
     """
-    code = self.request.get('code')
+    updated_invitation = self.request.get('invitation', {})
+    code = updated_invitation.get('code')
     if not code:
       raise NoInvitationSpecifiedError
+
+    if memcache.get(self.request.get('token', '')) != code:
+      logging.error('Expired token')
+      raise ExpiredTokenError
+
     invitation = GetInvitation(code)
-    
+
     invitation_guest_ids = [g.id() for g in invitation.guests]
 
-    if not self.request.get('guests'):
+    if not updated_invitation.get('guests'):
       raise GuestNotSpecifiedError
 
-    for guest in self.request.get('guests'):
+    for guest in updated_invitation.get('guests'):
 
       if guest.get('id') not in invitation_guest_ids:
         raise GuestNotOnInvitationError
@@ -165,7 +178,8 @@ class InvitationHandler(JsonHandler):
         guest_ndb.rsvp = models.RsvpStatus.COMING
         if not guest.get('food_choice'):
           raise NoFoodChoiceSelectionError
-        guest_ndb.food_choice = models.FoodChoice(id=guest.get('food_choice').get('id')).key
+        guest_ndb.food_choice = models.FoodChoice(
+            id=guest.get('food_choice').get('id')).key
       
       elif rsvp == models.RsvpStatus.NOT_COMING:
         guest_ndb.rsvp = models.RsvpStatus.NOT_COMING
@@ -244,7 +258,8 @@ class BulkInvitationHandler(JsonHandler):
       guests = [g.get() for g in invitation.guests]
       row = {'GUEST NAME': ' & '.join([g.name for g in guests])}
       for food_choice in food_choices:
-        row[food_choice.name] = len([g for g in guests if g.food_choice == food_choice.key])
+        row[food_choice.name] = len(
+              [g for g in guests if g.food_choice == food_choice.key])
       csv_writer.writerow(row)
 
   def HandlePost(self):
