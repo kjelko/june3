@@ -111,8 +111,8 @@
     <h3><span>RSVP</span></h3>
     
     <div layout="column" layout-align="center center">
-      <p ng-show="$ctrl.errorMessage" ng-bind="$ctrl.errorMessage" class="md-error"></p>
       <form ng-submit="$ctrl.lookUpInvitation()" ng-show="$ctrl.rsvpFormState == 'initial'" layout="column" layout-align="center center">
+        <p ng-show="$ctrl.errorMessage" ng-bind="$ctrl.errorMessage" class="md-error"></p>
         <p ng-show="!$ctrl.errorMessage">We hope you can join us!<br>Please enter your invitation code below to RSVP:</p>        
         <div>
           <md-input-container class="invitation-code">
@@ -131,7 +131,7 @@
         <div id="recaptcha-container"></div>
       </div>
 
-      <div ng-show="$ctrl.rsvpFormState == 'rsvp'">
+      <div ng-show="$ctrl.rsvpFormState == 'rsvp'" class="rsvp-form-container">
         <div ng-repeat="guest in $ctrl.invitation.guests" layout="row" layout-align="start center" class="rsvp-form">
           <span ng-bind="guest.name" class="guest-name"></span>
           <md-input-container class="guest-rsvp">
@@ -156,6 +156,7 @@
             <input ng-disabled="guest.rsvp != 'coming'" ng-model="guest.dietary_notes" />
           </md-input-container>
         </div>
+        <p ng-show="$ctrl.errorMessage" ng-bind="$ctrl.errorMessage" class="md-error"></p>
         <md-button ng-click="$ctrl.sendRsvp()" class="md-primary md-raised md-accent">Submit</md-button>
       </div>
 

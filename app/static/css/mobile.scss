@@ -49,6 +49,28 @@
     }
   }
 
+  #rsvp {
+    .rsvp-form-container {
+      width: 100%;
+      
+      .rsvp-form {
+        display: block;
+      }
+
+      .rsvp-form > * {
+        display: block;
+        margin-left: 25px;
+        max-width: 300px;
+        width: 100% !important;
+      }
+
+      .guest-name {
+        padding: 15px 0 20px;
+        text-align: center;
+      }
+    }
+  }
+
   section.footer {
     font-size: 60px !important;
   }
