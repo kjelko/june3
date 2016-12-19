@@ -55,13 +55,13 @@
       
       .rsvp-form {
         display: block;
+        margin: auto;
+        max-width: 300px;
       }
 
       .rsvp-form > * {
         display: block;
-        margin-left: 25px;
-        max-width: 300px;
-        width: 100% !important;
+        width: 100%;
       }
 
       .guest-name {
