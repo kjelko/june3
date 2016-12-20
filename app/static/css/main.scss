@@ -69,7 +69,7 @@ section {
   padding-bottom: 25px;
   text-align: center;
 
-  div {
+  > div {
     margin: auto;
     max-width: 1000px;
   }
@@ -167,7 +167,45 @@ section.hero {
     }
   }
 
+  .carousel {
+    overflow: hidden;
+    position: relative;
+    width: 100%;
 
+    > div {
+      max-width: none;
+      height: 100%;
+      position: absolute;
+      transition: left 0.5s ease-out;
+
+      div {
+        background-position: center;
+        background-size: cover;
+        display: inline-block;
+        filter: contrast(115%) sepia(35%);
+        overflow: hidden;
+        height: 100%;
+        position: relative;
+
+        .md-caption {
+          background: rgba(0, 0, 0, 0.4);
+          bottom: -50%;
+          color: $color-white;
+          left: 0;
+          padding: 3px;
+          position: absolute;
+          transition: bottom .4s ease-out;
+          width: 100%;
+        }
+      }
+
+      div:hover {
+        .md-caption { 
+          bottom: 0; 
+        }
+      } 
+    }
+  }
 }
 
 #logistics {

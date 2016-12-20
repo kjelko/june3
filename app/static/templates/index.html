@@ -24,15 +24,24 @@
     </div>
   </section>
 
-  <section id="story">
+  <section id="story" layout="column">
     <h3><span>Our story</span></h3>
-    <div layout="row">
-      <div flex=50 class="story">
+    <div layout="row" layout-align="center stretch">
+      <div flex=45 class="story">
         <p>Theresa and Kevin first met in their sophomore year at Lehigh University. They were first introduced by friends at a party and have since spent about 7 years together. After graduating from Lehigh, Kevin spent some time working in San Francisco while Theresa was in graduate school on Long Island, all the way across the country. They eventually found themselves together again in January 2014, when Kevin moved back to the east coast and settled in Brooklyn. They now reside together in Prospect Heights with their cuddly canine companion, Kaiser Roll.</p>
 
         <p>Kevin and Theresa have a lot in common: they both grew up in Southeastern PA (Kevin hails from Chester Springs, not too far from Theresa's childhood home of Spring Mount), they both love dogs, and they both can't seem to eat enough pizza. Now that they have found lifelong partners in life, love, and pizza-eating, they are excited to celebrate with friends and family in June 2017!</p>
       </div>
-      <div flex=50>:)</div>
+      <div flex=55 class="carousel">
+        <div style="width: %%100 * $ctrl.slides.length%%%; left: -%%$ctrl.activeSlide * 100%%%">
+          <div style="width: %%1 / $ctrl.slides.length * 100%%%; background-image: url('/static/assets/%%$index + 1%%.jpg')" 
+               ng-repeat="slide in $ctrl.slides"
+               layout="row"
+               layout-align="end stretch">
+            <span class="md-caption">%%slide%%</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

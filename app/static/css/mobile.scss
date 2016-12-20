@@ -41,6 +41,17 @@
       display: block;
       max-width: 100%;
     }
+
+    .carousel {
+      height: 280px;
+      > div {
+        div {
+          .md-caption {
+            bottom: 0;
+          }
+        }
+      }
+    }
   }
 
   #logistics {

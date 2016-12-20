@@ -24,6 +24,22 @@ var PageController = function($window, $rootScope, $http) {
   this.recaptchaKey = '6Lc1Rw0UAAAAAE0Ny9GzKrFE6bukJoAbO-a82CGf';
 
   this.recaptchaResponse_ = '';
+
+  this.slides = [
+    'Spring break 2012 in Ireland',
+    'Strolling through Old Montreal',
+    'Exploring a Japanese market',
+    'Hiding their fear of heights on a ferris wheel in Andorra',
+    'On the beach in Barcelona',
+    'Kevin is not amused in London'
+  ];
+
+  this.activeSlide = 0;
+
+  setInterval(function() {
+    this.activeSlide = this.activeSlide == this.slides.length - 1 ? 0 : this.activeSlide + 1;
+    this.rootScope_.$digest();
+  }.bind(this), 12000);
 };
 
 
