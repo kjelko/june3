@@ -24,13 +24,9 @@ JINJA_ENVIRONMENT = jinja2.Environment(
 class WeddingSite(webapp2.RequestHandler):
   
   def get(self):
-    if users.is_current_user_admin():
-      template = JINJA_ENVIRONMENT.get_template('index.html')
-      template_args = {}
-      self.response.out.write(template.render(template_args))
-    else:
-      self.response.out.write(
-          '<a href="%s">login</a>' % users.create_login_url())
+    template = JINJA_ENVIRONMENT.get_template('index.html')
+    template_args = {}
+    self.response.out.write(template.render(template_args))
 
 
 class WeddingAdminSite(webapp2.RequestHandler):
