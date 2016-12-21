@@ -1,5 +1,9 @@
 @import 'vars';
 
+.md-select-menu-container.md-active {
+  max-width: calc(100% - 17px);
+}
+
 @media screen and (max-width: 980px) {
   #logistics {
     div, p {
