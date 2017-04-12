@@ -79,6 +79,7 @@ class JsonHandler(webapp2.RequestHandler):
       if method == 'post':
         try:
           request = json.loads(self.request.body or '')
+          logging.info('Request: %s', request)
         except ValueError:
           request = {}
         for key, list_value in self.request.POST.dict_of_lists().iteritems():
