@@ -137,7 +137,7 @@ class InvitationHandler(JsonHandler):
       raise CaptchaError
 
     code = self.request.get('code')
-    memcache.add(g_captcha_response, code, 600)
+    memcache.add(g_captcha_response, code, 3600)
     if not code:
       raise NoInvitationSpecifiedError
     return GetInvitation(code).to_dict()
