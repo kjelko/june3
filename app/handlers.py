@@ -157,8 +157,7 @@ class InvitationHandler(JsonHandler):
       raise NoInvitationSpecifiedError
 
     if memcache.get(self.request.get('token', '')) != code:
-      logging.error('Expired token')
-      raise ExpiredTokenError
+      logging.info('Expired token. Continuing to execute.')
 
     invitation = GetInvitation(code)
 
