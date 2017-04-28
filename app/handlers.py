@@ -106,7 +106,7 @@ class InvitationHandler(JsonHandler):
   """Retrieves invitation details."""
 
   def HandleGet(self):
-    """Retreives ingormations about a single invitation.
+    """Retreives information about a single invitation.
 
     GET Args:
       g-recaptcha-response: reCaptcha response.
@@ -180,6 +180,7 @@ class InvitationHandler(JsonHandler):
           raise NoFoodChoiceSelectionError
         guest_ndb.food_choice = models.FoodChoice(
             id=guest.get('food_choice').get('id')).key
+        guest_ndb.dietary_notes = guest.get('dietary_notes')
       
       elif rsvp == models.RsvpStatus.NOT_COMING:
         guest_ndb.rsvp = models.RsvpStatus.NOT_COMING
